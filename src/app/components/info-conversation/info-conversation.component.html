@@ -1,0 +1,183 @@
+<div style="width:100%;height:70px;border-bottom: solid thin #e7e7e7;">
+  <div style="width:100%;height:100%;padding:10px">
+    <div style="width:20%;height:100%;float: left;display: flex;justify-content: center;align-items: center;max-width: 50px">
+      <img src={{profileImage}} style="height:75%;border-radius: 50%">
+    </div>
+    <div style="width:80%;height:100%;float: left;display: flex;align-items: center">
+      <div style="margin-left:10px">
+        {{roomchatName}}
+      </div>
+
+    </div>
+  </div>
+</div>
+<div id="info-conversation-body" (scroll)="onScrollInfoConv()" style="width:100%;overflow-y: auto;overflow-x: hidden;">
+  <div style="width:100%;height:200px;border-bottom: solid thin #e7e7e7">
+    <div style="padding:15px;width:100%;height:100%">
+      <div style="width:100%;height:40px;">
+        Tùy chọn
+      </div>
+    </div>
+  </div>
+  <div style="width:100%;height:auto;border-bottom: solid thin #e7e7e7">
+    <div style="padding:15px;width:100%;height:100%">
+      <div style="width:100%;height:40px;">
+        Mọi người
+      </div>
+      <div (click)="onClickAddUsers()" style="width:100%;height:40px;cursor: pointer;">
+        <div style="width:20%;height:100%;display: flex;justify-content: center;align-items: center;float: left;">
+          <i class="fas fa-plus" style="font-size: 26px"></i>
+        </div>
+        <div style="width:80%;height:100%;display: flex;margin-left:10px;align-items: center">
+          <div>
+            Thêm người
+          </div>
+        </div>
+      </div>
+      <div style="width:100%;height:50px" *ngFor="let user of usersInRoomchat">
+        <div style="width:20%;height:100%;display: flex;justify-content: center;align-items: center;float: left;max-width: 50px">
+          <img src={{user.profileImage}} style="width:50%;border-radius: 50%">
+        </div>
+        <div style="cursor: pointer;width:44%;height:100%;display: flex;margin-left:10px;align-items: center;float: left">
+          <div>
+            {{user.username}}
+          </div>
+        </div>
+        <div style="font-size:12px;width:23%;height:100%;display: flex;margin-left:10px;align-items: center;float: left">
+          <div *ngIf="user.isAdmin">
+            Quản trị viên
+          </div>
+        </div>
+        <div (click)="openManageUserGroupModal(user._id)" style="font-size:12px;width:3%;height:100%;display: flex;margin-left:10px;align-items: center;float: right;cursor: pointer;">
+          <div>
+            <i style="font-size: 16px" class="fas fa-ellipsis-v"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="width:100%;height:auto;border-bottom: solid thin #e7e7e7">
+    <div style="padding:15px;width:100%;height:100%">
+      <div style="width:100%;height:40px;">
+        Files
+      </div>
+      <div style="width:100%;height:50px" *ngFor="let file of files">
+        <div style="width:20%;height:100%;display: flex;justify-content: center;align-items: center;float: left;">
+          <i class="fas fa-arrow-circle-down" style="font-size:20px"></i>
+        </div>
+        <div style="cursor: pointer;width:75%;height:100%;overflow: hidden;text-overflow: ellipsis; display: flex;margin-left:10px;align-items: center;float: left">
+          <a href={{file.downloadLink}} style="text-decoration: none">
+            {{file.fileName}}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="width:100%;height:auto;border-bottom: solid thin #e7e7e7">
+    <div style="padding:15px;width:100%;height:100%">
+      <div style="width:100%;height:40px;">
+        Ảnh
+      </div>
+      <div style="width:33%;height:100px;float: left;" *ngFor="let image of images">
+        <div style="cursor: pointer;width:100%;height:100%;display: flex;justify-content: center;align-items: center">
+          <img src={{image.imageSrc}} style="height:100%;">
+        </div>
+      </div>
+    </div>
+    <div *ngIf="loadingPhotos" id="loading-photos" class="loading-photos">
+      <img src="../../../assets//loading-1.gif" style="width:17px">&nbsp;
+      Đang tải...
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showManageUserGroup" id="manage-user-group-modal" class="custom-modal">
+  <div class="custom-modal-content" style="height: 270px;">
+    <div style="background-color: #e7e7e7;border-bottom:1px solid;border-color:#e7e7e7;padding-top:0px;display: flex;align-content: center;width: 100%;height: 57px">
+      <div style="margin-left:10px;margin-top:14px;font-size: 20px">
+        Quản lý thành viên nhóm chat
+      </div>
+    </div>
+    <div class="modal-options-body">
+      <div class="assign-admin-options" (click)="assignAdmin()">
+        <div style="margin-top:15px;font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
+        line-height: 1.28;font-size: 17px;font-weight: 500">
+          Bổ nhiệm làm quản trị viên
+        </div>
+      </div>
+      <div class="delete-assign-admin-options" (click)="deleteAssignAdmin()">
+        <div style="margin-top:15px;font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
+        line-height: 1.28;font-size: 17px;font-weight: 500;color:red">
+          Gỡ vai trò quản trị viên
+        </div>
+      </div>
+      <div class="delete-user-from-group-options" (click)="deleteUserFromGroup()">
+        <div style="margin-top:15px;font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
+        line-height: 1.28;font-size: 17px;font-weight: 500">
+          Xóa khỏi nhóm chat
+        </div>
+
+      </div>
+    </div>
+    <div style="width:100%;height: 61px;border-top:1px solid;border-color:#e7e7e7;">
+      <!-- <button type="button" class="btn btn-info" style="float:right;width:80px;height: 40px;margin:10px">
+        Lưu
+      </button> -->
+      <button (click)="closeManageUserGroupModal()" type="button" class="btn btn-danger" style="float:right;width:80px;height: 40px;margin:10px;margin-right:10px">
+        Hủy
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showAddUserToGroup" id="add-user-to-group" class="custom-modal">
+  <div class="custom-modal-content" style="height: 420px;">
+    <div style="background-color: #e7e7e7;border-bottom:1px solid;border-color:#e7e7e7;padding-top:0px;display: flex;align-content: center;width: 100%;height: 57px">
+      <div style="margin-left:10px;margin-top:14px;font-size: 20px">
+        Thêm người vào nhóm chat
+      </div>
+    </div>
+    <div class="modal-options-body" style="height:300px">
+      <div style="width:100%;height:60px;padding:10px;border-bottom: solid thin;border-color: #e7e7e7">
+        <input type="text" [(ngModel)]="searchTerm" (ngModelChange)='onSearchUser()' placeholder="Nhập bạn bè..." style="height: 100%;width: 100%;outline: none;border:transparent;box-shadow: aqua">
+      </div>
+      <div *ngIf="searchedList.length !== 0" class="result-user-search" id="result-user-search">
+        <div *ngFor='let searchedUser of searchedList' class="search-list-info-comp" (click)="onClickSearchResult(searchedUser)">
+          <div style="width:100%;height:100%;padding:10px">
+            <div class="result-user-search-profileimage">
+              <img src={{searchedUser.profileImage.lowQuality}} style="width:30px;border-radius: 50%">
+            </div>
+            <div class="result-user-search-username">
+              {{searchedUser.username}}
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div *ngIf="searchedList.length === 0" class="picked-user-search">
+        <div *ngFor='let pickedUser of pickedUsersToAdd' class="picked-list-info-comp">
+          <div style="width:100%;height:100%;padding:10px">
+            <div class="result-user-search-profileimage">
+              <img src={{pickedUser.profileImage.lowQuality}} style="width:30px;border-radius: 50%">
+            </div>
+            <div class="result-user-search-username">
+              {{pickedUser.username}}
+            </div>
+            <div style="width:30px;height:40px;float: right;display: flex;justify-content: center;align-items: center">
+              <i class="far fa-check-circle" style="font-size:25px;"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="width:100%;height: 61px;border-top:1px solid;border-color:#e7e7e7;">
+      <button (click)="addUsersToGroup()" type="button" class="btn btn-info" style="float:right;width:80px;height: 40px;margin:10px">
+        Hoàn tất
+      </button>
+      <button (click)="closeAddUsersModal()" type="button" class="btn btn-danger" style="float:right;width:80px;height: 40px;margin:10px;margin-right:10px">
+        Hủy
+      </button>
+    </div>
+  </div>
+</div>

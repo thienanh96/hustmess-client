@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Calling...</title>
+  <script src="jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/0.3.16/peer.min.js"></script>
+</head>
+
+<body>
+  <div id="div-chat">
+    <p>Online user:</p>
+    <ul id="ulUser">
+    </ul>
+    <h3 id="my-peer">Your Id: </h3>
+    <video id="localStream" width="300" controls autoplay></video>
+    <br /><br />
+    <video id="remoteStream" width="300" controls autoplay></video>
+    <br /><br />
+    <input type="text" id="remoteId" placeholder="Remote ID">
+    <button id="btnCall">Call</button>
+  </div>
+</body>
+<script>
+  function openStream() {
+    const config = {
+      audio: false,
+      video: true
+    };
+    return navigator.mediaDevices.getUserMedia(config);
+  }
+
+  function playStream(idVideoTag, stream) {
+      
+  }
+
+  const peer = new Peer();
+  openStream()
+    .then(stream => {
+        playStream('localStream', stream);
+        const call = peer.call(peerID, stream);
+        call.on('stream', remoteStream => playStream('remoteStream', remoteStream));
+    });
+</script>
+
+</html>

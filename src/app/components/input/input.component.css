@@ -1,0 +1,94 @@
+.input-text {
+  /* width: 58%; */
+  z-index: 0;
+  float: left;
+}
+
+.input-file {
+  width: 260px;
+  height: 100%;
+  float: left;
+}
+
+.preview-file {
+  max-width: 100%;
+  height: 100px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex
+}
+
+.preview-file::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  width: 5px;
+  background-color: #79879b;
+}
+
+.preview-file::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 10px;
+  /* height: 8px; */
+  background-color: #eff1f4;
+  /* or add it to the track */
+  /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+    background-color: #F5F5F5;
+    width: 12px;
+    background-color: #F5F5F5;
+    height:100%; */
+}
+
+.emoj-modal {
+  z-index: 10000;
+  box-shadow: 0 0 10px #9ecaed;
+  background-color: white;
+  right: 5px;
+  position: absolute;
+  height: 200px;
+  border-radius: 10px;
+  border: transparent
+}
+
+.emoj-modal-body {
+  width: 100%;
+  height: 100%;
+}
+
+.emoj-type {
+  width: 10%;
+  height: 100%;
+  float: left;
+  font-size: 33px;
+  display: flex;
+  justify-content: center;
+  align-items: center
+}
+
+.emoj-type:hover {
+  background-color: #e7e7e7
+}
+
+.emoj-detail {
+  width: 100%;
+  height: 100%;
+  padding: 10px
+}
+
+#text-area-input::-webkit-scrollbar-thumb {
+  border-radius: 13px;
+  width: 9px;
+  background-color: #79879b;
+}
+
+#text-area-input::-webkit-scrollbar {
+  width: 9px;
+  border-radius: 13px;
+  /* height: 8px; */
+  background-color: #eff1f4; /* or add it to the track */
+/* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+border-radius: 10px;
+  background-color: #F5F5F5;
+  width: 12px;
+  background-color: #F5F5F5;
+  height:100%; */
+}

@@ -1,0 +1,60 @@
+<nav *ngIf='showNavbarComp' id="navbar-component" class="navbar navbar-default navbar-fixed-top" style="height:75px;padding:0px;margin:0px;z-index:0">
+  <div class="container navbar-custom">
+    <div class="navbar-custom-brand">
+      <img href="#" src="../../assets/logo.png" class="navbar-custom-image">
+    </div>
+    <!-- <div class="navbar-search">
+      <div class="input-group" style="width:280px">
+        <input (keyup)='searchUsers()' type="text" class="form-control " placeholder="   Search " [(ngModel)]='keysearch'>
+      </div>
+      <div id="navbar-search-results" class="navbar-search-results">
+        <div (click)="onClickSearchedUser(searchedUser._id)" id="navbar-search-results" name="navbar-search-results"
+          *ngFor='let searchedUser of searchedList' class="navbar-search-results-each">
+          <div id="navbar-search-results" name="navbar-search-results" style="width: 20%;height:100%;display:flex;justify-content: center;align-items: center;float:left">
+            <img id="navbar-search-results" name="navbar-search-results" src={{searchedUser.profileImage}} style="width:30px;border-radius: 50%">
+          </div>
+          <div id="navbar-search-results" name="navbar-search-results" style="height:100%;float:left;display:flex; align-items: center">
+            {{searchedUser.username}}
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="navbar-icon">
+      <div style="float:left;width:68px;height:36px;display: flex;align-items: center;justify-content: center;cursor: pointer;">
+        <a>
+          <i class="fas fa-home" style="font-size:170%;margin-top:6px"></i>
+        </a>
+      </div>
+      <div style="float:left;width:68px;height:36px;display: flex;align-items: center;justify-content: center;cursor: pointer;">
+        <a>
+          <i class="fas fa-users" style="font-size:185%;margin-top:6px"></i>
+        </a>
+      </div>
+
+      <div style="float:left;width:68px;height:36px;display: flex;align-items: center;justify-content: center;cursor:pointer">
+        <a>
+          <i class="fas fa-user-circle" style="font-size:170%;margin-top:6px"></i>
+        </a>
+      </div>
+    </div>
+
+
+  </div>
+</nav>
+<!-- <div class="container" style="position:relative;cursor:pointer;" *ngIf="openNotification" (clickOutside)="closeNotification($event)">
+  <div class="notification" style="margin-top:84px">
+    <div class="notification-body" id='notification-body' (scroll)="onScrolNotificationPopover()">
+      <div *ngFor="let notification of notifications" (click)="onClickNotification(notification)" class="notification-body-each">
+        <div class="notification-profilephoto">
+          <img src={{notification.fromUser.profileImage}} style="width:40px;border-radius: 50%">
+        </div>
+        <div class="notification-content" [style.font-weight]="notification.isSeen ? '' : '600'">
+          {{notification.content}}
+        </div>
+      </div>
+      <div *ngIf='!loadNotificationComplete' id='loader-notification' class="loader-notification">
+        <img style="height:25px" src='../../../assets/loader-notification.gif'>
+      </div>
+    </div>
+  </div>
+</div> -->

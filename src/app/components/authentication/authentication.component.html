@@ -1,0 +1,104 @@
+<div id="root" class="row" style="margin-top:75px;width:100%">
+  <div class="col-sm-6" id="login-image-1" style="position:relative;height:730px">
+    <img id="iphone-image" src="../../../assets/login.png"
+      style="position:absolute;right:0px;top:37px;width:500px">
+  </div>
+  <div id="authenticateUI" class="col-sm-4 authenticateUI" style="text-align: center">
+    <div id="loginUI" *ngIf="switchToLoginUI" class="loginUI">
+      <form class="form-group container-fluid">
+        <img src="../../assets/logo.png" style="height:43%;width:43%">
+        <div style="font-size:25px;font-weight: 600">Đăng nhập</div>
+        <input [(ngModel)]="login.username" type="email" class="form-control" name="email" placeholder="Phone number, username, or email"
+          style="margin-top:27px">
+        <input [(ngModel)]="login.password" type="password" class="form-control" name="password" placeholder="Password"
+          style="margin-top:10px">
+        <button (click)="onLogin()" class="btn btn-info form-control" style="margin-top:20px">Đăng nhập</button>
+        <div style="margin-top:30px;position:relative;width:100%;height:46px">
+          <hr style="width:40%;display:inline-block;position:absolute;right:60%">
+          <div style="width:30px;display:inline-block;left:46%;position:absolute">
+            <h4> OR</h4>
+          </div>
+          <hr style="width:40%;display:inline-block;position:absolute;left:60%">
+        </div>
+        <!-- <button (click)="onLoginFacebook()" class="btn btn-info form-control" style="height:47px;margin-top:7%">
+                  <div style="margin-top:2%">
+                      <i style="display:inline-block;font-size:140%" class="fa fa-facebook"></i>
+                      <p style="display:inline-block;font-size:120%">&nbsp; Log in with Facebook</p>
+                  </div>
+              </button> -->
+        <div style="text-align:center;margin-top:4%;margin-bottom:-8%">
+          <p id="msg-error-login" style="color:green">
+
+          </p>
+        </div>
+        <div style="margin-top:16%">
+          <a style="cursor:pointer;text-decoration:none">Quên mật khẩu?</a>
+        </div>
+        <div style="margin-top:10%;margin-left:-31px">
+          <h5 style="margin-left:40px;display:inline-block;font: bold 14px/33px Georgia, serif;">Chưa có tài khoản?</h5>
+          <a  (click)="openRegisterUI()" style="display:inline-block;cursor:pointer;text-decoration:none">Đăng ký</a>
+        </div>
+      </form>
+    </div>
+    <div id="registerUI" *ngIf="switchToRegisterUI" class="registerUI">
+      <form [formGroup]="registerForm" class="form-group container-fluid">
+        <img src="../../assets/logo.png" style="height:43%;width:43%">
+        <div style="font-size:25px;font-weight: 600">Đăng ký</div>
+        <input formControlName="email" type="email" class="form-control" placeholder="Email" style="margin-top:27px">
+        <div *ngIf="registerForm.controls.email.hasError('required')" style="text-align:center">
+          <p style="color:red"> Bắt buộc điền email </p>
+        </div>
+        <div *ngIf="registerForm.controls.email.hasError('pattern')" style="text-align:center">
+          <p style="color:red"> Email không hợp lệ. Vui lòng thử lại </p>
+        </div>
+        <div *ngIf="!registerForm.controls.email.hasError('exist')" style="text-align:center">
+          <p style="color: green"> Email chưa được sử dụng </p>
+        </div>
+
+        <div *ngIf="loading" style="text-align:center;display: flex;justify-content: center">
+          <div>
+            <img style="float: left ;width:30px;margin-top:-5px" src="../../../assets/loading.gif">
+            <p style="color:rgb(255, 130, 47); float: left;"> Đang kiểm tra </p>
+          </div>
+
+        </div>
+
+        <div *ngIf="registerForm.controls.email.hasError('exist')" style="text-align:center">
+          <p style="color:red"> Email đã tồn tại. Xin chọn lại </p>
+        </div>
+        <input formControlName="phoneNumber" type="text" class="form-control" placeholder="Mobile Number" style="margin-top:27px">
+        <div *ngIf="registerForm.controls.phoneNumber.hasError('required')" style="text-align:center">
+          <p style="color:red"> Bắt buộc điền số điện thoại </p>
+        </div>
+        <div *ngIf="registerForm.controls.phoneNumber.hasError('pattern')" style="text-align:center">
+          <p style="color:red"> Số điện thoại không hợp lệ. Vui lòng thử lại </p>
+        </div>
+        <input formControlName="username" type="text" class="form-control" placeholder="Username" style="margin-top:10px">
+        <div *ngIf="registerForm.controls.username.hasError('required')" style="text-align:center">
+          <p style="color:red"> Bắt buộc điền username </p>
+        </div>
+        <input formControlName="password" type="password" class="form-control" placeholder="Password" style="margin-top:10px">
+        <div *ngIf="registerForm.controls.password.hasError('required')" style="text-align:center">
+          <p style="color:red"> Bắt buộc điền password </p>
+        </div>
+        <div *ngIf="registerForm.controls.password.hasError('pattern')" style="text-align:center">
+          <p style="color:red"> Password có độ dài tối thiểu 8 ký tự, có chữ hóa, chữ thường và chữ số </p>
+        </div>
+        <button id='register-button' (click)="onRegister()" class="btn btn-info form-control" style="margin-top:20px">Đăng ký</button>
+        <div style="text-align:center;margin-top:4%;margin-bottom:-8%">
+          <p id="msg-error-register" style="color:red">
+
+          </p>
+        </div>
+        <div style="margin-top:10%;text-align:center;font: 16px/28px Georgia, serif;">
+          Bằng việc đăng ký, bạn đã đồng ý với
+          <p><a href="https://help.instagram.com/155833707900388"><strong>Điều khoản & Điều kiện</strong></a></p>
+        </div>
+        <div style="margin-top:10%;margin-left:-31px">
+          <h5 style="margin-left:40px;display:inline-block;font: bold 14px/33px Georgia, serif;">Đã có tài khoản?</h5>
+          <a (click)="openLoginUI()" style="display:inline-block;cursor:pointer;text-decoration:none">Đăng nhập</a>
+        </div>
+      </form>
+    </div>
+
+  </div>

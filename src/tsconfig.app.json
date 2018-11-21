@@ -2,7 +2,9 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/app",
-    "types": []
+    "types": [
+      "webrtc"
+    ]
   },
   "exclude": [
     "test.ts",

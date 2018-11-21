@@ -1,0 +1,41 @@
+<div style="margin-top:74px">
+  <div id="newmessage-header" class="newmessage-header">
+    <div (click)='onClickPreviousNav()' id="newmessage-header-previous" class="newmessage-header-previous" *ngIf='showNavPrevious'>
+      <i class="fas fa-chevron-left" style="font-size:30px;"></i>
+    </div>
+    <div class="newmessage-header-label">
+      Đến:
+    </div>
+    <div id="newmessage-header-search" style="padding-left: 0px;" class="newmessage-header-search">
+      <input type="text" [(ngModel)]="searchTerm" (ngModelChange)='onSearchUser()' placeholder="Nhập bạn bè..." style="height: 100%;width: 100%;outline: none;border:transparent">
+    </div>
+    <div (click)="createConversation()" style="float:left;width:40px;height:100%;padding-top:8px;padding-right:8px;padding-bottom: 8px;display: flex;justify-content: center;align-items: center;cursor: pointer">
+      <i class="fas fa-plus" style="font-size:20px"></i>
+    </div>
+    <div class="newmessage-tags" id="newmessage-tags" *ngIf="taggedUsers.length !== 0">
+      <div *ngFor='let taggedUser of taggedUsers' style="width:auto;height:50px;float: left;display: block">
+        <div style="float:left;height:50px;text-align: center">
+          <div style="margin-left:10px;margin-top: 6px;font-weight: 600;background-color: palegreen;padding: 8px;border: transparent;border-radius: 15px;float:left">
+            {{taggedUser.username}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="searchedList.length !== 0" class="newmessage-search-result" id="newmessage-search-result">
+      <div id="newmessage-search-results-each" name="newmessage-search-results" *ngFor='let searchedUser of searchedList'
+        class="newmessage-search-results-each" (click)="onClickSearchResult(searchedUser.username, searchedUser._id)">
+        <div id="newmessage-search-results-each-image" name="newmessage-search-results" style="width: 60px;height:50px;position: absolute;display:flex;justify-content: center;align-items: center;float:left">
+          <img id="newmessage-search-results" name="newmessage-search-results" src={{searchedUser.profileImage.lowQuality}}
+            style="width:30px;border-radius: 50%">
+        </div>
+        <div id="newmessage-search-results-each-username" name="newmessage-search-results" class="newmessage-search-results-each-username">
+          {{searchedUser.username}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="newmessage-body" class="newmessage-body">
+
+  </div>
+</div>

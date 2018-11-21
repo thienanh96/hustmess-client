@@ -1,0 +1,65 @@
+<div *ngIf="isMe()" id="my-message" style="width:100%;margin-top: 5px">
+  <div class="my-message-profileimage">
+
+  </div>
+  <div *ngIf="message.fileType === 'application'" class="my-message-content">
+    <div style="margin-left: 10px;margin-right:8px;width: 100%;height:100%">
+      <a href={{message.attach}} style="color:white" target="_blank">
+        <div style="width:15%;height:30px;float:left;display: flex;justify-content: center;align-items: center">
+          <i class="fas fa-arrow-circle-down" style="font-size:20px"></i>
+        </div>
+        <div style="overflow: hidden;text-overflow: ellipsis;height:22px;line-height: 1.4;font-size:15px;width:85%;height:30px;float:left;display: flex;justify-content: center;align-items: center;overflow: hidden;text-overflow: ellipsis">
+          <div style="overflow: hidden;text-overflow: ellipsis;height:20px;">
+            {{message.fileName}}
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div *ngIf="message.content !== '' && message.fileType === ''" class="my-message-content">
+    <div style="padding: 10px;font-size: 15px; color: white;word-wrap: break-word;line-height: 1.28">
+      {{message.content}}
+    </div>
+  </div>
+  <div *ngIf="message.fileType === 'image'" class="my-message-content" style="background-color: transparent">
+    <div *ngIf="message.content !== ''" class="my-message-content" style="padding: 10px;font-size: 15px; color: white;word-wrap: break-word;line-height: 1.28;margin-bottom: 5px">
+      {{message.content}}
+    </div>
+    <div style="margin-top:5px;width: 100%;height:100%">
+      <img src={{message.attach}} style="width:100%;height:100%;border-radius: 14px">
+    </div>
+  </div>
+
+</div>
+
+<div *ngIf="!isMe()" id="other-message" style="width:100%;margin-top: 5px">
+  <div class="other-message-profileimage">
+    <img *ngIf="displayLastInfo()" #profileImageMessage src={{message.profileImage}} style="border-radius: 50%;width:70%; height:28px;margin-top: 15px;margin-left: 5px;">
+  </div>
+  <div style="margin-left:45px">
+    <!-- <div style="border:none;background-color: transparent;border-radius: 0px;width:100%;float: left;height:20px">
+      {{message.username}}
+    </div> -->
+    <div class="other-message-content" *ngIf="message.content !== ''" style="padding: 10px;font-size: 15px; color: black;word-wrap: break-word;line-height: 1.28">
+      {{message.content}}
+    </div>
+    <div class="other-message-content" *ngIf="message.fileType === 'image'" style="width: 100%;height:100%;background-color: transparent">
+      <img src={{message.attach}} style="width:100%;height:100%;border-radius: 14px;">
+    </div>
+    <div class="other-message-content" *ngIf="message.fileType === 'application'" style="margin-left: 10px;margin-right:8px;width: 100%;height:100%">
+      <a href={{message.attach}} style="color:black" target="_blank">
+        <div style="width:15%;height:30px;float:left;display: flex;justify-content: center;align-items: center">
+          <i class="fas fa-arrow-circle-down" style="font-size:20px"></i>
+        </div>
+        <div style="font-size:15px;width:85%;height:30px;float:left;display: flex;justify-content: center;align-items: center;overflow: hidden;text-overflow: ellipsis">
+          <div>
+            report.rar
+          </div>
+        </div>
+      </a>
+    </div>
+    <div *ngIf="displayLastInfo()" class="username-message">
+      Gửi từ @{{message.username}}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,180 @@
+<div id='root' style="width:100%; height: 70px">
+  <div id="last-message-comp" style="padding:  10px; width: 100%; height:70px">
+    <div id="profile-image" class="profile-image">
+      <img style="border-radius: 50%;width:100%; height:50px" src={{profileImage}}>
+      <div *ngIf="isActive" style="width:8px;height:8px;border:transparent;border-radius: 50%;background-color: springgreen;margin-right:5px">
+
+      </div>
+      <div *ngIf="idle" style="width:8px;height:8px;border:transparent;border-radius: 50%;background-color: red;margin-right:5px">
+
+      </div>
+    </div>
+    <div #messagebody id="message-body" class="message-body" (click)="openConversation()">
+      <div class="message-body-username">
+        {{roomchatName}}
+      </div>
+      <div class="message-body-content">
+        {{content}}
+      </div>
+    </div>
+    <div (click)="openManageRoomchat()" id="message-body-setting" class="message-body-setting">
+      <i style="font-size: 20px" class="fas fa-ellipsis-v"></i>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="showManageRoomchatModal" id="manage-roomchat-modal" class="custom-modal">
+  <div id="manage-roomchat-modal-0" class="custom-modal-content" style="height: 270px;">
+    <div style="background-color: #e7e7e7;border-bottom:1px solid;border-color:#e7e7e7;padding-top:0px;display: flex;align-content: center;width: 100%;height: 57px">
+      <div style="margin-left:10px;margin-top:14px;font-size: 20px">
+        Quản lý cuộc trò chuyện
+      </div>
+    </div>
+    <div class="modal-options-body">
+      <div class="delete-message-modal-options" (click)="showDeleteMessageModalFunc()">
+        <div style="margin-top:15px;font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
+        line-height: 1.28;font-size: 17px;font-weight: 500">
+          Xóa tất cả tin nhắn
+        </div>
+      </div>
+      <div class="delete-roomchat-modal-options" (click)="showDeleteRoomchatModalFunc()">
+        <div style="margin-top:15px;font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
+        line-height: 1.28;font-size: 17px;font-weight: 500;color:red">
+          Xóa phòng chat
+        </div>
+      </div>
+      <div class="unread-modal-options" (click)="markAsUnread()">
+        <div style="margin-top:15px;font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
+        line-height: 1.28;font-size: 17px;font-weight: 500">
+          Đánh dấu là chưa đọc
+        </div>
+
+      </div>
+    </div>
+    <div style="width:100%;height: 61px;border-top:1px solid;border-color:#e7e7e7;">
+      <!-- <button type="button" class="btn btn-info" style="float:right;width:80px;height: 40px;margin:10px">
+        Lưu
+      </button> -->
+      <button (click)="onClickCancelManageRoomchatModal()" type="button" class="btn btn-danger" style="float:right;width:80px;height: 40px;margin:10px;margin-right:10px">
+        Hủy
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showDeleteMessageModal" id="confirm-delete-modal" class="custom-modal">
+  <div class="custom-modal-content" style="height: 190px" id="confirm-delete-modal-0">
+    <div style="background-color: #e7e7e7;border-bottom:1px solid;border-color:#e7e7e7;padding-top:0px;display: flex;align-content: center;width: 100%;height: 57px">
+      <div style="margin-left:10px;margin-top:14px;font-size: 20px">
+        Bạn chắc chắn muốn xóa ?
+      </div>
+    </div>
+    <div class="modal-options-content">
+      <div style="font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
+        line-height: 1.50;font-size: 17px;font-weight: 500;text-align: center;padding: 10px;margin-top:5px;display: flex;justify-content: center;align-items: center">
+        <div>
+          Xóa tất cả tin nhắn trong phòng chat, tuy nhiên những người khác vẫn có thể thấy được.
+
+        </div>
+      </div>
+    </div>
+    <div style="width:100%;height: 61px;border-top:1px solid;border-color:#e7e7e7;">
+      <button (click)="deleteAllMessages()" type="button" class="btn btn-info" style="float:right;width:80px;height: 40px;margin:10px">
+        OK
+      </button>
+      <button (click)="onClickCancelDeleteRoomchatModal()" type="button" class="btn btn-danger" style="float:right;width:80px;height: 40px;margin:10px;margin-right:10px">
+        Hủy
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showDeleteRoomchatModal" id="confirm-delete-modal" class="custom-modal">
+  <div class="custom-modal-content-0" style="height: 190px">
+    <div style="background-color: #e7e7e7;border-bottom:1px solid;border-color:#e7e7e7;padding-top:0px;display: flex;align-content: center;width: 100%;height: 57px">
+      <div style="margin-left:10px;margin-top:14px;font-size: 20px">
+        Bạn chắc chắn muốn xóa ?
+      </div>
+    </div>
+    <div class="modal-options-content">
+      <div style="font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
+        line-height: 1.50;font-size: 17px;font-weight: 500;text-align: center;padding: 10px;display: flex;justify-content: center;align-items: center">
+        <div>
+          Để xóa phòng chat này, bạn phải là người tạo phòng chat
+        </div>
+      </div>
+    </div>
+    <div style="width:100%;height: 61px;border-top:1px solid;border-color:#e7e7e7;">
+      <button (click)="deleteRoomchat()" type="button" class="btn btn-info" style="float:right;width:80px;height: 40px;margin:10px">
+        OK
+      </button>
+      <button (click)="onClickCancelDeleteRoomchatModal()" type="button" class="btn btn-danger" style="float:right;width:80px;height: 40px;margin:10px;margin-right:10px">
+        Hủy
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="announceModal.deleteAllMessages.show" id="announce-success-delete-allmessage" class="custom-modal">
+  <div id="announce-success-delete-allmessage-0" class="custom-modal-content" style="height: 190px">
+    <div style="background-color: #e7e7e7;border-bottom:1px solid;border-color:#e7e7e7;padding-top:0px;display: flex;align-content: center;width: 100%;height: 57px">
+      <div *ngIf="announceModal.deleteAllMessages.ok" style="margin-left:10px;margin-top:14px;font-size: 20px">
+        Xong
+      </div>
+      <div *ngIf="announceModal.deleteAllMessages.fail" style="margin-left:10px;margin-top:14px;font-size: 20px">
+        Lỗi
+      </div>
+    </div>
+    <div class="modal-options-content">
+      <div style="font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
+        line-height: 1.50;font-size: 17px;font-weight: 500;text-align: center;padding: 10px;margin-top:5px;display: flex;justify-content: center;align-items: center">
+        <div *ngIf="announceModal.deleteAllMessages.ok">
+          Đã xóa thành công
+
+
+        </div>
+        <div *ngIf="announceModal.deleteAllMessages.fail">
+          Có lỗi xảy ra
+
+        </div>
+      </div>
+    </div>
+    <div style="width:100%;height: 61px;border-top:1px solid;border-color:#e7e7e7;">
+      <button (click)="onClickCancelDeleteRoomchatModal()" type="button" class="btn btn-info" style="float:right;width:80px;height: 40px;margin:10px">
+        OK
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="announceModal.deleteRoomchat.show" id="announce-success-delete-roomchat" class="custom-modal">
+  <div class="custom-modal-content" style="height: 190px">
+    <div style="background-color: #e7e7e7;border-bottom:1px solid;border-color:#e7e7e7;padding-top:0px;display: flex;align-content: center;width: 100%;height: 57px">
+      <div *ngIf="announceModal.deleteRoomchat.ok" style="margin-left:10px;margin-top:14px;font-size: 20px">
+        Xong
+      </div>
+      <div *ngIf="announceModal.deleteRoomchat.fail" style="margin-left:10px;margin-top:14px;font-size: 20px">
+        Lỗi
+      </div>
+    </div>
+    <div class="modal-options-content">
+      <div style="font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
+        line-height: 1.50;font-size: 17px;font-weight: 500;text-align: center;padding: 10px;margin-top:5px;display: flex;justify-content: center;align-items: center">
+        <div *ngIf="announceModal.deleteRoomchat.ok">
+          Đã xóa thành công
+
+        </div>
+        <div *ngIf="announceModal.deleteRoomchat.fail">
+          Bạn không thể xóa cuộc trò chuyện này
+
+        </div>
+      </div>
+    </div>
+    <div style="width:100%;height: 61px;border-top:1px solid;border-color:#e7e7e7;">
+      <button (click)="onClickCancelDeleteRoomchatModal()" type="button" class="btn btn-info" style="float:right;width:80px;height: 40px;margin:10px">
+        OK
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,166 @@
+<div id="input-component" style="z-index:0;width: 100%;height:auto;padding: 10px;font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
+line-height: 1.28;position:absolute;">
+  <div class="preview-file" id="preview-file" *ngIf="this.previewFiles.length !== 0">
+    <div *ngFor="let file of previewFiles;let i = index;" style="width:auto;height:auto">
+      <div *ngIf="!file.isImage" style="background-color: #0084ff;margin-top:8px;max-width:250px;min-width:250px;height:63px;border:transparent;margin-left: 15px;border: solid;border-color: #e7e7e7;border-width: thin;border-radius: 10px">
+        <div style="width:25%;height:100%;display: flex;justify-content: center;align-items: center;float: left;">
+          <i class="far fa-file" style="font-size:29px;color:white"></i>
+        </div>
+        <div style="width:75%;height:100%;background-color: white;float: left;">
+          <div style="padding:10px;width: 100%;height: 100%;font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;">
+            <div style="width:100%;height:50%;font-weight: 600">
+              {{file.ext}}
+            </div>
+            <div style="width:100%;height:50%;overflow: hidden; text-overflow: ellipsis">
+              {{file.file.name}}
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div *ngIf="file.isImage" style="margin-left:10px;border:transparent;border-radius: 10px;height:100%;max-width:250px;">
+        <img src={{file.imageSrc}} style="height:100%;border-radius: 15px;width:100%">
+      </div>
+      <div style="width:250px;height:20px;float:right">
+        <ngb-progressbar showValue="true" type="success" [value]="previewFiles[i].percentUpload"></ngb-progressbar>
+
+      </div>
+    </div>
+
+  </div>
+  <div class="input-text" id="input-text">
+    <textarea (click)="onClick()" (keydown)="onEnter($event)" [(ngModel)]="contentText" id="text-area-input" autofocus
+      placeholder="Viết tin nhắn..." (ngModelChange)="onChangeTextArea($event)" rows="1" autosize style="z-index: 0;line-height: 1.85;width:95%;overflow: hidden;outline:0cm;border-color:white;margin-top:7px;margin-left:10px;margin-bottom:3px"></textarea>
+  </div>
+  <div class="input-file" id="input-file">
+    <div style="width:45px;height:100%;float:left;display: flex;align-items: center;justify-content: center;cursor: pointer;">
+      <label for="upload-file" style="margin:0px;cursor: pointer;">
+        <i class="far fa-file" style="font-size:29px"></i>
+        <input (change)="showPreviewFiles($event)" type="file" id="upload-file" style="display:none" multiple>
+      </label>
+
+    </div>
+    <div style="width:45px;height:100%;float:left;display: flex;align-items: center;justify-content: center;cursor: pointer;">
+      <label for="upload-image" style="margin:0px;cursor: pointer;">
+        <i class="far fa-images" style="font-size:29px"></i>
+        <input accept="image/*" (change)="showPreviewFiles($event)" type="file" id="upload-image" style="display:none"
+          multiple>
+      </label>
+    </div>
+    <div (click)="openEmojModal()" style="width:45px;height:100%;float:left;display: flex;align-items: center;justify-content: center;cursor: pointer;"
+      id="emoj-choose-div">
+      <i class="far fa-smile" style="font-size:29px" id="emoj-choose-icon"></i>
+    </div>
+    <div style="width:45px;height:100%;float:left;display: flex;align-items: center;justify-content: center;cursor: pointer;">
+      <i class="far fa-thumbs-up" style="font-size:29px;"></i>
+    </div>
+    <div style="width:45px;height:100%;float:left;display: flex;align-items: center;justify-content: center;cursor: pointer;">
+      <i class="far fa-share-square" style="font-size:29px;"></i>
+    </div>
+  </div>
+  
+</div>
+
+
+<div (clickOutside)="closeEmojModal($event)" id="emoj-modal" class="emoj-modal" *ngIf="showEmojModal">
+  <div class="emoj-modal-body" id='emoj-modal-body'>
+    <div (click)="onClickEmoj($event)" style="width:100%;height:70%;border-bottom: solid 1px;overflow-x:hidden;overflow-y: auto">
+      <div class="emoj-detail" id="emoj-detail-1" style="display:block">
+        <div *ngFor="let emoj of emojList.type1;let i=index" id="emoj-{{i}}" style="float:left;font-size:28px;max-width:60px;height:30%">
+          {{emoj}}
+        </div>
+      </div>
+      <div class="emoj-detail" id="emoj-detail-2" style="display:none">
+        <div *ngFor="let emoj of emojList.type2" style="float:left;font-size:28px;max-width:60px;height:30%">
+          {{emoj}}
+        </div>
+      </div>
+      <div class="emoj-detail" id="emoj-detail-3" style="display:none">
+
+      </div>
+      <div class="emoj-detail" id="emoj-detail-4" style="display:none">
+
+      </div>
+      <div class="emoj-detail" id="emoj-detail-5" style="display:none">
+
+      </div>
+      <div class="emoj-detail" id="emoj-detail-6" style="display:none">
+
+      </div>
+      <div class="emoj-detail" id="emoj-detail-7" style="display:none">
+
+      </div>
+      <div class="emoj-detail" id="emoj-detail-8" style="display:none">
+
+      </div>
+      <div class="emoj-detail" id="emoj-detail-9" style="display:none">
+
+      </div>
+      <div class="emoj-detail" id="emoj-detail-10" style="display:none">
+
+      </div>
+    </div>
+    <div style="width:100%;height:30%">
+      <div style="width:100%;height:100%;cursor: pointer;" (click)="onClickEmojType($event)">
+        <div class="emoj-type" id="emoj-type-1">
+          <div id="emoj-type-1">
+            😀
+          </div>
+        </div>
+        <div class="emoj-type" id="emoj-type-2">
+          <div id="emoj-type-2">
+            👶
+          </div>
+        </div>
+        <div class="emoj-type" id="emoj-type-3">
+          <div id="emoj-type-3">
+            🧥
+          </div>
+
+        </div>
+        <div class="emoj-type" id="emoj-type-4">
+          <div id="emoj-type-4">
+            👶🏻
+          </div>
+
+        </div>
+        <div class="emoj-type" id="emoj-type-5">
+          <div id="emoj-type-5">
+            ⚽️
+          </div>
+
+        </div>
+        <div class="emoj-type" id="emoj-type-6">
+          <div id="emoj-type-6">
+            🚗
+          </div>
+
+        </div>
+        <div class="emoj-type" id="emoj-type-7">
+          <div id="emoj-type-7">
+            ❤️
+          </div>
+
+        </div>
+        <div class="emoj-type" id="emoj-type-8">
+          <div id="emoj-type-8">
+            ⌚️
+          </div>
+
+        </div>
+        <div class="emoj-type" id="emoj-type-9">
+          <div id="emoj-type-9">
+            🐶
+          </div>
+
+        </div>
+        <div class="emoj-type" id="emoj-type-10">
+          <div id="emoj-type-10">
+            🍏
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

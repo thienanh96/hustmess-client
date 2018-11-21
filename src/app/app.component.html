@@ -1,20 +1,27 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<app-navbar></app-navbar>
+<router-outlet>
+  <template ngbModalContainer></template>
+</router-outlet>
 
+<div *ngIf="showCallAccept" id="call-accept-modal" class="custom-modal">
+  <div class="custom-modal-content" style="height: 190px">
+    <div style="background-color: #e7e7e7;border-bottom:1px solid;border-color:#e7e7e7;padding-top:0px;display: flex;align-content: center;width: 100%;height: 57px">
+      <div style="margin-left:10px;margin-top:14px;font-size: 20px">
+        {{callUsername}} đang gọi bạn !
+      </div>
+    </div>
+    <div class="modal-options-content">
+      <div style="font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
+        line-height: 1.50;font-size: 17px;font-weight: 500;text-align: center;padding: 10px;margin-top:5px;display: flex;justify-content: center;align-items: center">
+        <button (click)="acceptCall()" type="button" class="btn btn-info" style="float:left;width:80px;height: 40px;margin:10px">
+          Đồng ý
+        </button>
+        <button (click)="rejectCall()" type="button" class="btn btn-danger" style="float:left;width:80px;height: 40px;margin:10px;margin-right:10px">
+          Từ chối
+        </button>
+      </div>
+    </div>
+    <div style="width:100%;height: 61px;border-top:1px solid;border-color:#e7e7e7;">
+    </div>
+  </div>
+</div>

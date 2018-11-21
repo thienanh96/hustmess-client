@@ -1,0 +1,51 @@
+@media screen and (max-width:420px) {}
+
+@media screen and (max-width:910px) {
+  .roomchat-header-label {
+    background-color: red
+  }
+}
+
+.custom-modal {
+  display: block;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 10;
+  /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  background-color: rgb(0, 0, 0);
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */
+  /* overflow: auto; */
+}
+
+.custom-modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  margin-top: 5%;
+  border: 1px solid #888;
+  width: 35%;
+  height: 220px;
+  border-radius: 10px;
+  overflow: hidden;
+  font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
+  line-height: 1.28;
+  font-size: 17px;
+  font-weight: 500
+    /* Could be more or less, depending on screen size */
+}
+
+.modal-options-content {
+  height: 70px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}

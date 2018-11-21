@@ -1,0 +1,40 @@
+<div style="margin-top:74px">
+  <div class="roomchat-header">
+    <div class="roomchat-header-setting">
+      <i class="fas fa-cog" style="font-size:30px;margin-top:8px"></i>
+    </div>
+    <div class="roomchat-header-label" id="roomchat-header-label">
+      <div style="margin-top: 10px">Tin nhắn</div>
+    </div>
+    <div id="roomchat-header-next" class="roomchat-header-next" style="display: none;">
+      <i class="fas fa-chevron-right" style="font-size:30px;margin-top:8px"></i>
+    </div>
+    <div (click)="createRoomchat()" class="roomchat-header-newmessage">
+      <i class="far fa-envelope" style="font-size:30px;margin-top:8px"></i>
+    </div>
+  </div>
+  <div class="roomchat-search">
+    <input [(ngModel)]="searchTerm" class="form-control" style="width:100%" type="text" placeholder="Tìm kiếm trên HustMess">
+  </div>
+  <div class="roomchat-body" id="roomchat-body">
+    <div style="cursor: pointer" *ngFor="let roomchat of roomchats| searchRoomchat: searchTerm;let i = index" id={{roomchat._id}}>
+      <app-lastmessage [myID]="myID" [roomchatID]="roomchat._id" [reactive]="roomchat.reactive" [idle]="roomchat.idle"
+        [timeActive]="roomchat.timeActive" [content]='roomchat.content' [profileImage]='roomchat.profileImage'
+        [roomchatName]='roomchat.roomchatName'></app-lastmessage>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- <div popover="content to be shown in the popover"
+     popoverTitle="Popover header"
+     popoverPlacement="top"
+     [popoverOnHover]="false"
+     [popoverCloseOnClickOutside]="true"
+     [popoverCloseOnMouseOutside]="false"
+     [popoverDisabled]="false"
+     [popoverAnimation]="true"
+     [popoverDismissTimeout]="1000">
+    element on which this popover is applied.
+</div> -->
