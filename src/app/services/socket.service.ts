@@ -249,6 +249,13 @@ export class SocketService {
     })
   }
 
+  emitNotification(roomchatID,notificationObject){
+    this.socket.emit('notification',{
+      roomchatID: roomchatID,
+      notification: notificationObject
+    })
+  }
+
   emitAcceptCallStatus(accept: boolean,roomchatID: string, userID: string){
     this.socket.emit('peerID',{
       accept: accept,
@@ -287,6 +294,18 @@ export class SocketService {
   receivePeerID(){
     let observable = new Observable<any>(observer => {
       this.socket.on('peerID', (data) => {
+        observer.next(data);
+      });
+      return () => {
+        this.socket.disconnect();
+      };
+    })
+    return observable;
+  }
+
+  receiveNotification(){
+    let observable = new Observable<any>(observer => {
+      this.socket.on('notification', (data) => {
         observer.next(data);
       });
       return () => {

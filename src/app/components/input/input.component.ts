@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, HostListener, ViewChild, ChangeDetectorRef, AfterViewChecked, AfterContentChecked } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, HostListener, ViewChild, ChangeDetectorRef, AfterViewChecked, AfterContentChecked } from '@angular/core';
 import { MessageService } from '../../services/message.service';
 import { ComponentCommunicationService } from '../../services/component-communication.service';
 import { SocketService } from '../../services/socket.service';
@@ -12,6 +12,7 @@ import { UploadService } from '../../services/upload.service';
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.css']
 })
+
 export class InputComponent implements OnInit, AfterViewInit, AfterContentChecked {
   roomchatID: string;
   myInfo: any = {
@@ -32,6 +33,7 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
     type2: ['👶', '👧', '🧒', '👦', '👩', '🧑', '👨', '👵', '🧓', '👴', '👲', '👳‍', '👳‍', '🧔', '👱‍', '👱‍', '👨‍'],
     type3: ['🧥', '👚', '👕', '👖', '👔', '👗', '👙', '👘', '👠', '👡', '👢', '👞', '👟']
   }
+  @Input() usersInRoomchat: Array<any>;
   constructor(private messageService: MessageService,
     private componentCommunicationService: ComponentCommunicationService,
     private socketService: SocketService,
@@ -64,7 +66,7 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
           document.getElementById('input-component').style.display = 'none'
         } else {
           document.getElementById('input-component').style.display = 'block';
-          
+
           document.getElementById('input-component').style.width = data.conversationSideWidth;
           let inputFile = document.getElementById('input-file').clientWidth;
           let inputComponent = document.getElementById('input-component').clientWidth;
@@ -166,14 +168,12 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
   showPreviewFiles($event) {
     let files = $event.target.files;
     let filesLength = files.length;
-
     if (this.previewFiles.length === 0) {
       this.componentCommunicationService.setData({
         fromComponent: 'input',
         toComponent: 'conversation',
         type: 'adjust-conversation-body'
       });
-      document.getElementById
     }
     for (let i = 0; i < filesLength; i++) {
       let myReader: FileReader = new FileReader();
@@ -215,10 +215,12 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
 
     }
     this.cdR.detectChanges();
+    
     let uploadFileEl = <HTMLInputElement>document.getElementById('upload-file');
     let uploadImageEl = <HTMLInputElement>document.getElementById('upload-image');
     uploadFileEl.value = null;
     uploadImageEl.value = null;
+    this.currentIndexPreviewFile = 0
 
 
   }
@@ -244,8 +246,25 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
           fileName: ''
         })
         this.sendCompCommunicationData(data, contentText, '');
+        console.log('userssss: ',this.usersInRoomchat)
+        if (this.usersInRoomchat) {
+          for (let userID in this.usersInRoomchat) {
+            this.socketService.emitNotification(this.roomchatID, {
+              type: 'incomming-message',
+              detail: {
+                typeContent: 'text',
+                content: data.newMessage.content
+              },
+              fromUserInfo: this.myInfo,
+              toUserID: userID,
+              time: Date.now()
+            })
+          }
+
+        }
       })
     } else if (filesLength !== 0) {
+      this.tempPreviewFile = []
       for (let filePreview of this.previewFiles) {
         let formData = new FormData();
         formData.append('file', filePreview.file);
@@ -264,14 +283,14 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
             if (dataUpload.fileType + '' === 'image') {
               attach = dataUpload.fileName;
               dataFile = dataUpload.imageSource;
-              console.log('attach: ', attach)
             } else {
               attach = dataUpload.downloadLink;
               dataFile = dataUpload.downloadLink;
             }
-            console.log('datafile: ', dataFile)
             let fileName = dataUpload.originalName
+            console.log('preview____1: ',this.previewFiles.map(el => el.file))
             this.deleteOneFilePreview(idPreviewFile);
+            console.log('preview____2: ',this.previewFiles)
             this.messageService.sendMessage(this.roomchatID, contentText, attach, dataUpload.fileType, fileName).subscribe(data => {
               if (data && data.success) {
                 console.log('$RRTT: ', data)
@@ -293,6 +312,20 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
                 });
                 this.currentIndexPreviewFile = 0;
                 this.sendCompCommunicationData(data, contentText, dataFile);
+                if (this.usersInRoomchat) {
+                  for (let userID in this.usersInRoomchat) {
+                    this.socketService.emitNotification(this.roomchatID, {
+                      type: 'incomming-message',
+                      fromUserInfo: this.myInfo,
+                      detail: {
+                        typeContent: 'file'
+                      },
+                      toUserID: userID,
+                      time: Date.now()
+                    })
+                  }
+
+                }
 
               }
 

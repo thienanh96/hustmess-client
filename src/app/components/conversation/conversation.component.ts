@@ -121,6 +121,7 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewInit {
         this.messages = [];
         this.roomchatName = this.processRoomchatName(data.roomchat.firstUserInRoomchat.username, data.roomchat.numberOfUserInRoomchat - 1, data.roomchat.typeRoomchat);
         this.IDSeenBy = data.roomchat.roomchat.isSeenBy;
+        console.log('IDseenby: ',this.IDSeenBy)
         if(this.IDSeenBy.length !== 0){
           this.confirmation.seen = true
         }
@@ -128,7 +129,12 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewInit {
         this.socketService.confirmCompleteLoad();
         this.b = this.roomchatUserService.getRoomchatUsers(this.roomchatID).subscribe(dataa => {
           if (dataa && dataa.success) {
-            this.usersInRoomchat = dataa.roomchatUsers.map(el => el.userID);
+            this.usersInRoomchat = dataa.roomchatUsers.map(el => el.userID).filter(el => el !== this.myID)
+            // this.componentCommunicationService.setData({
+            //   fromComponent: 'conversation',
+            //   toComponent: 'input',
+            //   type: 'users-in-roomchat'
+            // })
             if (this.usersInRoomchat.length > 2) {
               document.getElementById('call-icon').style.opacity = '0.6';
             } else {

@@ -135,6 +135,21 @@ export class AppComponent implements OnInit {
       console.log('call request', data);
     })
 
+    this.socketService.receiveNotification().subscribe(data => {
+      if (!data) return;
+      let notificationObject = data.notification;
+      let fromRoomchatID = data.fromRoomchatID;
+      console.log('count noti: ')
+      if (this.idle || this.isInRoomchatID(fromRoomchatID)) {
+        this.componentCommunicationService.setData({
+          fromComponent: 'app',
+          toComponent: 'navbar',
+          type: 'receive-notification',
+          notification: notificationObject
+        });
+      }
+
+    })
 
     this.socketService.confirmReceiveMessage().subscribe(data => {
       if (!data) return;
@@ -270,6 +285,11 @@ export class AppComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  isInRoomchatID(roomchatID){
+    let url = this.router.routerState.snapshot.url
+    return url === '/home/conversation/' + roomchatID || url === '/conversation/' + roomchatID
   }
 
 }
