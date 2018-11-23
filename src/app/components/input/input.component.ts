@@ -5,7 +5,7 @@ import { SocketService } from '../../services/socket.service';
 import { AuthenticationService } from '../../services/authentication.service';
 import { UserService } from '../../services/user.service';
 import { UploadService } from '../../services/upload.service';
-
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-input',
@@ -40,6 +40,7 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
     private authService: AuthenticationService,
     private userService: UserService,
     private uploadService: UploadService,
+    private notificationService: NotificationService,
     private cdR: ChangeDetectorRef) { }
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -246,9 +247,8 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
           fileName: ''
         })
         this.sendCompCommunicationData(data, contentText, '');
-        console.log('userssss: ',this.usersInRoomchat)
         if (this.usersInRoomchat) {
-          for (let userID in this.usersInRoomchat) {
+          for (let userID of this.usersInRoomchat) {
             this.socketService.emitNotification(this.roomchatID, {
               type: 'incomming-message',
               detail: {
@@ -258,7 +258,12 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
               fromUserInfo: this.myInfo,
               toUserID: userID,
               time: Date.now()
-            })
+            });
+            this.notificationService.createNotifications(userID,{
+              typeContent: 'text',
+              typeNotification: 'incomming-message',
+              content: data.newMessage.content
+            },Date.now()).subscribe(data => data)
           }
 
         }
@@ -288,12 +293,9 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
               dataFile = dataUpload.downloadLink;
             }
             let fileName = dataUpload.originalName
-            console.log('preview____1: ',this.previewFiles.map(el => el.file))
             this.deleteOneFilePreview(idPreviewFile);
-            console.log('preview____2: ',this.previewFiles)
             this.messageService.sendMessage(this.roomchatID, contentText, attach, dataUpload.fileType, fileName).subscribe(data => {
               if (data && data.success) {
-                console.log('$RRTT: ', data)
                 this.contentText = '';
                 if (this.previewFiles.length === 0) { //da gui het tat ca cac files
                   this.resizeInputTextArea(textAreaElement);
@@ -313,7 +315,7 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
                 this.currentIndexPreviewFile = 0;
                 this.sendCompCommunicationData(data, contentText, dataFile);
                 if (this.usersInRoomchat) {
-                  for (let userID in this.usersInRoomchat) {
+                  for (let userID of this.usersInRoomchat) {
                     this.socketService.emitNotification(this.roomchatID, {
                       type: 'incomming-message',
                       fromUserInfo: this.myInfo,
@@ -322,7 +324,11 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
                       },
                       toUserID: userID,
                       time: Date.now()
-                    })
+                    });
+                    this.notificationService.createNotifications(userID,{
+                      typeContent: 'file',
+                      typeNotification: 'incomming-message'
+                    },Date.now()).subscribe(data => data)
                   }
 
                 }

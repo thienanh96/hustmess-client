@@ -7,12 +7,12 @@ import * as io from 'socket.io-client';
   providedIn: 'root'
 })
 export class SocketService {
-
   constructor() {
-    this.socket = io(this.url);
+    this.socket = io(this.url)
   }
   private url = 'http://localhost:3333';
   private socket;
+
 
   sendUserID(userID, roomchatID) {
     this.socket.emit('send-userid', {
