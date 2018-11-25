@@ -41,7 +41,7 @@
     </div>
     <div id="conversation-body" class="conversation-body" (scroll)="onScrollMessages()">
       <div style="width: 100%;float:left" *ngFor="let message of messages">
-        <app-message [previousLastMessageID]="previousLastMessageID" style="width: 100%;height: 100%" [message]="message"
+        <app-message [roomchatID]="roomchatID" [previousLastMessageID]="previousLastMessageID" style="width: 100%;height: 100%" [message]="message"
           [myID]="myID" [lastMessageID]="lastMessageID" [previousUserID]="previousUserID" [lastUserID]="lastUserID"></app-message>
       </div>
       <div class="confirm-message">

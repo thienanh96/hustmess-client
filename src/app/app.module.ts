@@ -33,30 +33,34 @@ import { ClickOutsideModule } from 'ng4-click-outside';
 import { InfoConversationComponent } from './components/info-conversation/info-conversation.component';
 import { ServicesComponent } from './components/services/services.component';
 import { AnswerComponent } from './components/answer/answer.component';
+import { AuthGuard } from './guard/auth.guard';
+
 const appRoutes: Routes = [
   // {path:'newfeeds', component: },
   { path: 'authenticate', component: AuthenticationComponent },
-  { path: 'contacts', component: ContactsComponent },
+  { path: 'contacts', component: ContactsComponent, canActivate: [AuthGuard] },
   {
-    path: 'home', component: HomeComponent,
+    path: 'home', component: HomeComponent, canActivate: [AuthGuard],
     // data: { shouldReuse: true },
     children: [
       {
         path: 'conversation/:roomchatid',
-        component: ConversationComponent
+        component: ConversationComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'newmessage',
-        component: NewMessageComponent
+        component: NewMessageComponent,
+        canActivate: [AuthGuard]
       }
     ]
   },
-  { path: 'roomchats', component: RoomchatComponent},
-  { path: 'conversation/:roomchatid', component: ConversationComponent},
-  { path: 'infoconversation/:roomchatid', component: InfoConversationComponent},
-  { path: 'newmessage', component: NewMessageComponent},
-  { path: 'services/:id', component: ServicesComponent},
-  { path: 'answer/:id', component: AnswerComponent}
+  { path: 'roomchats', component: RoomchatComponent, canActivate: [AuthGuard]},
+  { path: 'conversation/:roomchatid', component: ConversationComponent, canActivate: [AuthGuard]},
+  { path: 'infoconversation/:roomchatid', component: InfoConversationComponent, canActivate: [AuthGuard]},
+  { path: 'newmessage', component: NewMessageComponent, canActivate: [AuthGuard]},
+  { path: 'services/:id', component: ServicesComponent, canActivate: [AuthGuard]},
+  { path: 'answer/:id', component: AnswerComponent, canActivate: [AuthGuard]}
   // {
   //   path: 'profile/:id', component: ProfileComponent, canActivate: [AuthGuard],children: [{ path: 'post/:postID', component: PostComponent }]
   // }

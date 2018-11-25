@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpRequest, HttpHeaders, HttpClient,HttpEvent,HttpEventType, HttpParams } from '@angular/common/http';
+import { HttpRequest, HttpHeaders, HttpClient, HttpEvent, HttpEventType, HttpParams } from '@angular/common/http';
 import { Http, Headers, URLSearchParams } from '@angular/http';
 import { Observable, Subject, ReplaySubject, from, of, range } from 'rxjs';
 import { map, filter, switchMap, catchError } from 'rxjs/operators';
@@ -13,28 +13,28 @@ import { AuthenticationService } from './authentication.service';
 export class UploadService {
 
   constructor(private http: Http, private authService: AuthenticationService, private httpClient: HttpClient) { }
-  uploadFile(formData: FormData,i: Number,roomchatID: string) {
+  uploadFile(formData: FormData, i: Number, roomchatID: string) {
     let headers = new Headers();
     this.authService.loadToken();
     headers.append('Authorization', this.authService.authToken);
     let req = new HttpRequest('POST', 'http://localhost:3333/uploads/files', formData, {
       reportProgress: true,
       headers: new HttpHeaders().set('Authorization', this.authService.authToken),
-      params: new HttpParams().set('roomchatid',roomchatID)
+      params: new HttpParams().set('roomchatid', roomchatID)
     });
-    return this.httpClient.request(req).pipe(map(event => this.getEventMessage(event,i)));
+    return this.httpClient.request(req).pipe(map(event => this.getEventMessage(event, i)));
     // return this.http.post('http://localhost:3333/uploads/files', formData, { headers: headers }).pipe(map(res => res.json()));
   }
 
-  getEventMessage(event: HttpEvent<any>,index: Number) {
+  getEventMessage(event: HttpEvent<any>, index: Number) {
     switch (event.type) {
       case HttpEventType.Sent:
         return 0;
-  
+
       case HttpEventType.UploadProgress:
         // Compute and show the % done:
         const percentDone = Math.round(100 * event.loaded / event.total);
-        console.log('index',index)
+        console.log('index', index)
         return {
           percentDone: percentDone,
           index: index
@@ -46,12 +46,20 @@ export class UploadService {
     }
   }
 
-  getFiles(roomchatID: string,typeFile: string,timeSeq: number,limit: number){
+  getFiles(roomchatID: string, typeFile: string, timeSeq: number, limit: number) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     this.authService.loadToken();
     headers.append('Authorization', this.authService.authToken);
-    return this.http.get('http://localhost:3333/files?roomchatid=' + roomchatID + '&type='+typeFile + '&time='+timeSeq+'&limit=' + limit, { headers: headers }).pipe(map(res => res.json()));
+    return this.http.get('http://localhost:3333/files/many?roomchatid=' + roomchatID + '&type=' + typeFile + '&time=' + timeSeq + '&limit=' + limit, { headers: headers }).pipe(map(res => res.json()));
+  }
+
+  getFile(roomchatID: string, typeFile: string, fileID: number) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    this.authService.loadToken();
+    headers.append('Authorization', this.authService.authToken);
+    return this.http.get('http://localhost:3333/files?roomchatid=' + roomchatID + '&type=' + typeFile + '&id=' + fileID, { headers: headers }).pipe(map(res => res.json()));
   }
 
 }

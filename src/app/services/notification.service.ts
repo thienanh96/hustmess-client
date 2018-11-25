@@ -19,6 +19,14 @@ export class NotificationService {
     return this.http.get('http://localhost:3333/notification/many?time=' + timeSeq + '&limit=' + limit, { headers: headers }).pipe(map(res => res.json()));
   }
 
+  getNumberOfUnreadNotifications() {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    this.authService.loadToken();
+    headers.append('Authorization', this.authService.authToken);
+    return this.http.get('http://localhost:3333/notification/many/count', { headers: headers }).pipe(map(res => res.json()));
+  }
+
   updateNotifications(topTime: number,bottomTime: number){ 
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');

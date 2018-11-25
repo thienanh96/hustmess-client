@@ -326,4 +326,20 @@ export class SocketService {
     })
     return observable;
   }
+
+  emitArrangeRoomchats(arrangedRoomchat){
+    return this.socket.emit('arrange-roomchats',arrangedRoomchat)
+  }
+
+  receiveArrangeRoomchats(){
+    let observable = new Observable<any>(observer => {
+      this.socket.on('arrange-roomchats', (data) => {
+        observer.next(data);
+      });
+      return () => {
+        this.socket.disconnect();
+      };
+    })
+    return observable;
+  }
 }

@@ -11,9 +11,8 @@
   /* Full width */
   height: 100%;
   /* Full height */
-  background-color: rgb(0, 0, 0);
   /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: #0e0e0e;
   /* Black w/ opacity */
   /* overflow: auto; */
 }

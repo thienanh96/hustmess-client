@@ -51,7 +51,7 @@ export class LastmessageComponent implements OnInit {
     private roomchatService: RoomchatService,
     private roomchatUserService: RoomchatUserService,
     private messageService: MessageService,
-    private cdR: ChangeDetectorRef) { }
+    private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     if (document.getElementById('last-message-comp')) {
@@ -78,6 +78,13 @@ export class LastmessageComponent implements OnInit {
 
   openManageRoomchat() {
     this.showManageRoomchatModal = true;
+    this.cdRef.detectChanges();
+    let w = window.innerWidth;
+    if(w < 900){
+      document.getElementById('manage-roomchat-modal-0').style.width = '100%'
+    } else {
+      document.getElementById('manage-roomchat-modal-0').style.width = '35%'
+    }
   }
 
   onClickCancelManageRoomchatModal() {
@@ -115,12 +122,26 @@ export class LastmessageComponent implements OnInit {
   showDeleteMessageModalFunc() {
     this.showManageRoomchatModal = false;
     this.showDeleteMessageModal = true;
+    this.cdRef.detectChanges();
+    let w = window.innerWidth;
+    if(w < 900){
+      document.getElementById('confirm-delete-modal-0').style.width = '100%'
+    } else {
+      document.getElementById('confirm-delete-modal-0').style.width = '35%'
+    }
   }
 
 
   showDeleteRoomchatModalFunc() {
     this.showManageRoomchatModal = false;
     this.showDeleteRoomchatModal = true;
+    this.cdRef.detectChanges();
+    let w = window.innerWidth;
+    if(w < 900){
+      document.getElementById('confirm-delete-modal-0').style.width = '100%'
+    } else {
+      document.getElementById('confirm-delete-modal-0').style.width = '35%'
+    }
   }
 
   deleteAllMessages() {
@@ -150,7 +171,7 @@ export class LastmessageComponent implements OnInit {
       if (data && data.success) {
         this.showDeleteRoomchatModal = false;
         this.announceModal.deleteRoomchat.show = true;
-        this.cdR.detectChanges();
+        this.cdRef.detectChanges();
         this.announceModal.deleteRoomchat.ok = true;
         this.componentCommunicationService.setData({
           fromComponent: 'last-message',

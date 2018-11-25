@@ -6,6 +6,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 import { UserService } from '../../services/user.service';
 import { UploadService } from '../../services/upload.service';
 import { NotificationService } from '../../services/notification.service';
+import { Router, ActivatedRoute, RouterStateSnapshot } from '@angular/router';
 
 @Component({
   selector: 'app-input',
@@ -38,6 +39,7 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
     private componentCommunicationService: ComponentCommunicationService,
     private socketService: SocketService,
     private authService: AuthenticationService,
+    private router: Router,
     private userService: UserService,
     private uploadService: UploadService,
     private notificationService: NotificationService,
@@ -53,30 +55,21 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
 
 
   ngOnInit() {
-    // document.getElementById('input-component').style.width = document.getElementById('conversation-side').clientWidth + 'px';
-    // let inputFile = document.getElementById('input-file').clientWidth;
-    // let inputComponent = document.getElementById('input-component').clientWidth;
-    // let off = inputComponent - inputFile - 40
-    // console.log('offff',off)
-    // document.getElementById('input-text').style.width = off + 'px';
-    // this.cdR.detectChanges();
+    this.roomchatID = this.getParams();
     this.componentCommunicationService.getData().subscribe(data => {
-      if (!data || data.fromComponent !== 'conversation') return;
-      if (data.type === 'adjust-input-comp-width') {
+      if (!data) return;
+      if (data.type === 'adjust-input-comp-width' && data.fromComponent === 'conversation') {
         if (data.hide) {
           document.getElementById('input-component').style.display = 'none'
         } else {
           document.getElementById('input-component').style.display = 'block';
-
           document.getElementById('input-component').style.width = data.conversationSideWidth;
           let inputFile = document.getElementById('input-file').clientWidth;
           let inputComponent = document.getElementById('input-component').clientWidth;
           let off = inputComponent - inputFile - 20;
           document.getElementById('input-text').style.width = off + 'px';
         }
-
       }
-      this.roomchatID = data.roomchatID;
     });
     this.userService.getMe('low').subscribe(data => {
       if (data && data.success) {
@@ -116,10 +109,6 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
       let oldHeight = document.getElementById('conversation-body').style.height;
       let newHeight = parseInt(oldHeight) + offsetHeight;
       document.getElementById('conversation-body').style.height = newHeight + 'px';
-      // document.getElementById('info-conversation-component').style.height = newHeight + 'px';
-      // let conversationSideHeight = document.getElementById('conversation-side').clientHeight;
-      // let infoConversationBodyHeight = conversationSideHeight - 70;
-      // document.getElementById('info-conversation-body').style.height = infoConversationBodyHeight + 'px';
     }
     this.widthTextArea = document.getElementById('input-text').clientWidth;
     this.heightTextArea = document.getElementById('text-area-input').clientHeight;
@@ -216,7 +205,7 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
 
     }
     this.cdR.detectChanges();
-    
+
     let uploadFileEl = <HTMLInputElement>document.getElementById('upload-file');
     let uploadImageEl = <HTMLInputElement>document.getElementById('upload-image');
     uploadFileEl.value = null;
@@ -230,9 +219,11 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
     let contentText = textAreaElement.value;
     let filesLength = this.previewFiles.length;
     if (filesLength === 0 && (contentText !== '' && contentText)) {
+
       this.messageService.sendMessage(this.roomchatID, contentText, '', '', '').subscribe(data => {
         this.contentText = '';
         this.resizeInputTextArea(textAreaElement);
+        console.log('wEEE: ', data)
         this.socketService.sendMessage({
           fromUserID: data.newMessage.fromUserID,
           type: 'message',
@@ -247,23 +238,26 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
           fileName: ''
         })
         this.sendCompCommunicationData(data, contentText, '');
+
         if (this.usersInRoomchat) {
           for (let userID of this.usersInRoomchat) {
             this.socketService.emitNotification(this.roomchatID, {
               type: 'incomming-message',
               detail: {
                 typeContent: 'text',
-                content: data.newMessage.content
+                content: data.newMessage.content,
+                fromRoomchatID: this.roomchatID
               },
               fromUserInfo: this.myInfo,
               toUserID: userID,
               time: Date.now()
             });
-            this.notificationService.createNotifications(userID,{
+            this.notificationService.createNotifications(userID, {
               typeContent: 'text',
               typeNotification: 'incomming-message',
-              content: data.newMessage.content
-            },Date.now()).subscribe(data => data)
+              content: data.newMessage.content,
+              fromRoomchatID: this.roomchatID
+            }, Date.now()).subscribe(data => data)
           }
 
         }
@@ -320,15 +314,17 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
                       type: 'incomming-message',
                       fromUserInfo: this.myInfo,
                       detail: {
-                        typeContent: 'file'
+                        typeContent: 'file',
+                        fromRoomchatID: this.roomchatID
                       },
                       toUserID: userID,
                       time: Date.now()
                     });
-                    this.notificationService.createNotifications(userID,{
+                    this.notificationService.createNotifications(userID, {
                       typeContent: 'file',
-                      typeNotification: 'incomming-message'
-                    },Date.now()).subscribe(data => data)
+                      typeNotification: 'incomming-message',
+                      fromRoomchatID: this.roomchatID
+                    }, Date.now()).subscribe(data => data)
                   }
 
                 }
@@ -382,14 +378,16 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
         fileType: fileType,
         fileName: fileName
       });
-      this.componentCommunicationService.setData({
+      let arrangedRoomchat = {
         fromComponent: 'input',
         type: 'arrange-roomchat',
         lastUserID: this.myInfo._id,
         content: contentText,
         roomchatID: this.roomchatID,
         profileImage: this.myInfo.profileImage
-      })
+      }
+      this.componentCommunicationService.setData(arrangedRoomchat);
+      this.socketService.emitArrangeRoomchats(arrangedRoomchat);
     }
   }
 
@@ -456,6 +454,12 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
         return this.previewFiles.splice(i, 1);
       }
     }
+  }
+
+  getParams() {
+    let url = this.router.routerState.snapshot.url
+    let tempLength = url.split('/').length;
+    return url.split('/')[tempLength - 1] + '';
   }
 
 

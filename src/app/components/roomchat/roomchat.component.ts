@@ -88,19 +88,37 @@ export class RoomchatComponent implements OnInit, AfterViewInit {
             }
           }
         }
-      } else if (data.fromComponent === 'input' && data.type === 'arrange-roomchat') {
+      } else if (data.fromComponent === 'input'&& data.type === 'arrange-roomchat') {
         this.arrangeRoomchats({
           lastUserID: data.lastUserID,
           content: data.content,
           roomchatID: data.roomchatID,
           profileImage: data.profileImage
         });
+      } else if (data.fromComponent === 'app' && data.type === 'arrange-roomchat') {
+        this.arrangeRoomchats({
+          lastUserID: data.arrangedRoomchat.lastUserID,
+          content: data.arrangedRoomchat.content,
+          roomchatID: data.arrangedRoomchat.roomchatID,
+          profileImage: data.arrangedRoomchat.profileImage
+        });
+        if (document.getElementById(data.arrangedRoomchat.roomchatID)) {
+          document.getElementById(data.arrangedRoomchat.roomchatID).style.backgroundColor = '#e7e7e7'
+        }
+        for (let roomchat of this.roomchats) {
+          if (roomchat._id === data.arrangedRoomchat.roomchatID) continue;
+          let el = document.getElementById(roomchat._id);
+          if (el && el.style.backgroundColor === 'rgb(231, 231, 231)') {
+            el.style.backgroundColor = 'white';
+            break;
+          }
+        }
       } else if (data.fromComponent === 'conversation' && data.type === 'confirm-loadparams') {
         this.cdR.detectChanges();
         if (document.getElementById(data.roomchatID)) {
           document.getElementById(data.roomchatID).style.backgroundColor = '#e7e7e7'
         }
-      } else if (data.fromComponent === 'last-message' && data.type === 'on-click-lastmessage') {
+      } else if ((data.fromComponent === 'last-message' || data.fromComponent === 'navbar')  && data.type === 'on-click-lastmessage') {
         if (!data.roomchatID) return;
         if (document.getElementById(data.roomchatID)) {
           document.getElementById(data.roomchatID).style.backgroundColor = '#e7e7e7'

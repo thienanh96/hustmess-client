@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, OnDestroy, ViewChild, AfterViewInit, AfterContentChecked } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild, AfterViewInit, AfterContentChecked,ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ComponentCommunicationService } from '../../services/component-communication.service';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-message',
@@ -14,10 +15,14 @@ export class MessageComponent implements OnInit,OnDestroy,AfterContentChecked,Af
   @Input() previousLastMessageID: string;
   @Input() previousUserID: string;
   @Input() myID: string;
+  @Input() roomchatID: string;
   communicationSubscription: Subscription;
   @ViewChild('profileImageMessage') profileImageMessage;
   @ViewChild('usernameMessage') usernameMessage;
-  constructor(private componentCommunicationService: ComponentCommunicationService) { }
+  openMessageOptionModal: boolean = false;
+  constructor(private componentCommunicationService: ComponentCommunicationService,
+              private cdRef: ChangeDetectorRef,
+              private messageService: MessageService) { }
 
   ngOnInit() {
     console.log('boolean: ',this.message.displayLastInfo)
@@ -50,5 +55,50 @@ export class MessageComponent implements OnInit,OnDestroy,AfterContentChecked,Af
 
   displayLastInfo(){
     return this.message.displayLastInfo
+  }
+
+  openMessageOptions(){
+    this.openMessageOptionModal = true
+    this.cdRef.detectChanges();
+    let w = window.innerWidth;
+    if(w < 900){
+      document.getElementById('custom-modal-content-open-message-options').style.width = '100%'
+    } else {
+      document.getElementById('custom-modal-content-open-message-options').style.width = '35%'
+    }
+  }
+
+  deleteMessageLocally(){
+    this.messageService.updateOneMessage(this.message._id).subscribe(data => {
+      if(data && data.success){
+        this.componentCommunicationService.setData({
+          fromComponent: 'message',
+          toComponent: 'conversation',
+          type: 'delete-one-message',
+          messageID: this.message._id
+        });
+        this.closeMessageOptions();
+      }
+    })
+  }
+
+  deleteMessagePermanently(){
+    this.messageService.deleteOneMessage(this.message._id).subscribe(data => {
+      console.log('delete vinh vien; ',data)
+      if(data && data.success){
+        
+        this.componentCommunicationService.setData({
+          fromComponent: 'message',
+          toComponent: 'conversation',
+          type: 'delete-one-message',
+          messageID: this.message._id
+        });
+        this.closeMessageOptions();
+      }
+    })
+  }
+
+  closeMessageOptions(){
+    this.openMessageOptionModal = false;
   }
 }

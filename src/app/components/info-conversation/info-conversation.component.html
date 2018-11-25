@@ -17,6 +17,28 @@
       <div style="width:100%;height:40px;">
         Tùy chọn
       </div>
+      <div style="width:100%;height:100%;padding-left: 15px;padding-right: 15px">
+        <div *ngIf="!receiveNotification" style="width:100%;height:50px" (click)="turnOffNotification()">
+          <div style="width:20%;height:100%;float:left;display: flex;justify-content: center;align-items: center">
+            <i class="fas fa-bell-slash" style="font-size: 25px"></i>
+          </div>
+          <div style="width:80%;height:100%;float:left;display: flex;align-items: center">
+            <div>
+              Tắt thông báo
+            </div>
+          </div>
+        </div>
+        <div *ngIf="receiveNotification" style="width:100%;height:50px" (click)="turnOnNotification()">
+          <div style="width:20%;height:100%;float:left;display: flex;justify-content: center;align-items: center">
+            <i class="fas fa-bell" style="font-size: 25px"></i>
+          </div>
+          <div style="width:80%;height:100%;float:left;display: flex;align-items: center">
+            <div>
+              Bật thông báo
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div style="width:100%;height:auto;border-bottom: solid thin #e7e7e7">
@@ -25,7 +47,7 @@
         Mọi người
       </div>
       <div (click)="onClickAddUsers()" style="width:100%;height:40px;cursor: pointer;">
-        <div style="width:20%;height:100%;display: flex;justify-content: center;align-items: center;float: left;">
+        <div style="width:16%;height:100%;display: flex;justify-content: center;align-items: center;float: left;">
           <i class="fas fa-plus" style="font-size: 26px"></i>
         </div>
         <div style="width:80%;height:100%;display: flex;margin-left:10px;align-items: center">
@@ -79,8 +101,8 @@
       <div style="width:100%;height:40px;">
         Ảnh
       </div>
-      <div style="width:33%;height:100px;float: left;" *ngFor="let image of images">
-        <div style="cursor: pointer;width:100%;height:100%;display: flex;justify-content: center;align-items: center">
+      <div style="width:33%;height:100px;float: left;" *ngFor="let image of images;let i = index">
+        <div (click)="onClickImage(image.fileID,i)" style="cursor: pointer;width:100%;height:100%;display: flex;justify-content: center;align-items: center">
           <img src={{image.imageSrc}} style="height:100%;">
         </div>
       </div>
@@ -93,7 +115,7 @@
 </div>
 
 <div *ngIf="showManageUserGroup" id="manage-user-group-modal" class="custom-modal">
-  <div class="custom-modal-content" style="height: 270px;">
+  <div id="custom-modal-content-manage-user-in-group" class="custom-modal-content" style="height: 270px;">
     <div style="background-color: #e7e7e7;border-bottom:1px solid;border-color:#e7e7e7;padding-top:0px;display: flex;align-content: center;width: 100%;height: 57px">
       <div style="margin-left:10px;margin-top:14px;font-size: 20px">
         Quản lý thành viên nhóm chat
@@ -132,7 +154,7 @@
 </div>
 
 <div *ngIf="showAddUserToGroup" id="add-user-to-group" class="custom-modal">
-  <div class="custom-modal-content" style="height: 420px;">
+  <div id="custom-modal-content-add-user-to-group" class="custom-modal-content" style="height: 420px;">
     <div style="background-color: #e7e7e7;border-bottom:1px solid;border-color:#e7e7e7;padding-top:0px;display: flex;align-content: center;width: 100%;height: 57px">
       <div style="margin-left:10px;margin-top:14px;font-size: 20px">
         Thêm người vào nhóm chat
@@ -179,5 +201,14 @@
         Hủy
       </button>
     </div>
+  </div>
+</div>
+
+<div class="custom-modal" *ngIf="openViewMode">
+  <div class="container" style="display: flex;justify-content: center;align-items: center;height:100%;width:100%">
+    <img id="image-in-view-mode" src={{currentPhotoInViewMode}} style="width:0px">
+    <i (click)="openNextPhotoViewMode()" class="fas fa-chevron-right" style="font-size:50px;position: absolute;color:wheat;right:0px;cursor: pointer;"></i>
+    <i (click)="openPreviousPhotoViewMode()" class="fas fa-chevron-left" style="font-size:50px;position: absolute;color:wheat;left:0px;cursor: pointer;"></i>
+    <i (click)="closeViewMode()" class="fas fa-times" style="font-size:40px;position: absolute;color:red;right:5px;top:5px;cursor: pointer;"></i>
   </div>
 </div>

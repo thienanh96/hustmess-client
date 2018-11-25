@@ -44,4 +44,20 @@ export class MessageService {
     return this.http.put('http://localhost:3333/message/many?roomchatid=' + roomchatID, {}, { headers: headers }).pipe(map(res => res.json()));
   }
 
+  deleteOneMessage(messageID) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    this.authService.loadToken();
+    headers.append('Authorization', this.authService.authToken);
+    return this.http.delete('http://localhost:3333/message?messageid=' + messageID, { headers: headers }).pipe(map(res => res.json()));
+  }
+
+  updateOneMessage(messageID) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    this.authService.loadToken();
+    headers.append('Authorization', this.authService.authToken);
+    return this.http.put('http://localhost:3333/message?messageid=' + messageID, {}, { headers: headers }).pipe(map(res => res.json()));
+  }
+
 }

@@ -1,10 +1,11 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, DoCheck, KeyValueDiffers, KeyValueDiffer } from '@angular/core';
 import { ComponentCommunicationService } from './services/component-communication.service';
 import { SocketService } from './services/socket.service';
 import { FriendService } from './services/friend.service';
 import { UserService } from './services/user.service';
 import { Router, ActivatedRoute, RouterStateSnapshot } from '@angular/router';
 import { AuthenticationService } from './services/authentication.service';
+import { NotificationService } from './services/notification.service';
 import * as Peer from 'peerjs';
 
 @Component({
@@ -27,6 +28,7 @@ export class AppComponent implements OnInit {
   peer: Peer;
   peerID: string = '';
   constructor(private componentCommunicationService: ComponentCommunicationService,
+    private notificationService: NotificationService,
     private router: Router,
     private socketService: SocketService,
     private friendService: FriendService,
@@ -46,29 +48,31 @@ export class AppComponent implements OnInit {
 
   }
 
-  ngOnInit() {
-    let interval = setInterval(() => {
-      if (this.authService.authToken && this.authService.authToken !== '') {
-        clearInterval(interval);
-        this.friendService.getFriends('true').subscribe(data => {
-          if (data && data.success) {
-            for (let friend of data.friends) {
-              this.socketService.joinRoomchat(friend + '_user');
-            }
-            this.myID = data.myID;
-            this.socketService.receiveConfirmConnect().subscribe(data => {
-              if (data && data.success) {
-                this.socketService.sendUserID(this.myID, this.myID + '_user');
-                setInterval(() => {
-                  this.socketService.sendUserID(this.myID, this.myID + '_user');
-                }, 2000)
-              }
-            });
 
-          }
-        });
+  ngOnInit() {
+    this.authService.getTokenStatus().subscribe(data => {
+      if (data) {
+        if (data.isAdded === true) {
+          this.friendService.getFriends('true').subscribe(data => {
+            if (data && data.success) {
+              for (let friend of data.friends) {
+                this.socketService.joinRoomchat(friend + '_user');
+              }
+              this.myID = data.myID;
+              this.socketService.receiveConfirmConnect().subscribe(data => {
+                if (data && data.success) {
+                  this.socketService.sendUserID(this.myID, this.myID + '_user');
+                  setInterval(() => {
+                    this.socketService.sendUserID(this.myID, this.myID + '_user');
+                  }, 2000)
+                }
+              });
+
+            }
+          });
+        }
       }
-    }, 100)
+    })
 
     this.componentCommunicationService.getData().subscribe(data => {
       if (!data) return;
@@ -139,15 +143,12 @@ export class AppComponent implements OnInit {
       if (!data) return;
       let notificationObject = data.notification;
       let fromRoomchatID = data.fromRoomchatID;
-      console.log('count noti: ')
-      if (this.idle || this.isInRoomchatID(fromRoomchatID)) {
-        this.componentCommunicationService.setData({
-          fromComponent: 'app',
-          toComponent: 'navbar',
-          type: 'receive-notification',
-          notification: notificationObject
-        });
-      }
+      this.componentCommunicationService.setData({
+        fromComponent: 'app',
+        toComponent: 'navbar',
+        type: 'receive-notification',
+        notification: notificationObject
+      });
 
     })
 
@@ -245,6 +246,16 @@ export class AppComponent implements OnInit {
       })
     })
 
+    this.socketService.receiveArrangeRoomchats().subscribe(data => {
+      if(!data) return;
+      return this.componentCommunicationService.setData({
+        fromComponent: 'app',
+        toComponent: 'roomchat',
+        type: 'arrange-roomchat',
+        arrangedRoomchat: data
+      })
+    })
+
 
     // this.componentCommunicationService.getData().subscribe(data => {
     //   if (!data) return;
@@ -287,7 +298,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  isInRoomchatID(roomchatID){
+  isInRoomchatID(roomchatID) {
     let url = this.router.routerState.snapshot.url
     return url === '/home/conversation/' + roomchatID || url === '/conversation/' + roomchatID
   }

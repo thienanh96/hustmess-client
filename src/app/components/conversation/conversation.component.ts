@@ -121,7 +121,6 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewInit {
         this.messages = [];
         this.roomchatName = this.processRoomchatName(data.roomchat.firstUserInRoomchat.username, data.roomchat.numberOfUserInRoomchat - 1, data.roomchat.typeRoomchat);
         this.IDSeenBy = data.roomchat.roomchat.isSeenBy;
-        console.log('IDseenby: ',this.IDSeenBy)
         if(this.IDSeenBy.length !== 0){
           this.confirmation.seen = true
         }
@@ -130,11 +129,6 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewInit {
         this.b = this.roomchatUserService.getRoomchatUsers(this.roomchatID).subscribe(dataa => {
           if (dataa && dataa.success) {
             this.usersInRoomchat = dataa.roomchatUsers.map(el => el.userID).filter(el => el !== this.myID)
-            // this.componentCommunicationService.setData({
-            //   fromComponent: 'conversation',
-            //   toComponent: 'input',
-            //   type: 'users-in-roomchat'
-            // })
             if (this.usersInRoomchat.length > 2) {
               document.getElementById('call-icon').style.opacity = '0.6';
             } else {
@@ -170,7 +164,7 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewInit {
                 if (message.userProfile._id !== previousUserID) {
                   this.messages[index - 1].displayLastInfo = true;
                 }
-                if (messagesLength - 1 === index) {
+                if (messagesLength - 1 === index && this.myID !== message.userProfile._id) {
                   this.messages[index - 1].displayLastInfo = false;
                   this.messages[index].displayLastInfo = true;
                 }
@@ -357,6 +351,15 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewInit {
             roomchatID: data.data.roomchatID,
             userID: data.data.userID
           })
+        }
+      } else if (data.fromComponent === 'message' && data.type === 'delete-one-message'){
+        let deletedMessageID = data.messageID;
+        console.log('deref%%%: ',deletedMessageID)
+        for(let i = 0; i < this.messages.length; i++){
+          if(this.messages[i]._id === deletedMessageID){
+            this.messages.splice(i,1);
+            break;
+          }
         }
       }
 
@@ -588,7 +591,10 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewInit {
             this.continueToLoad = false;
             return;
           }
+          
+
           for (let i = messagesLength - 1; i >= 0; i--) {
+            let previousMessageID = this.messages[0].userID;
             let message = data.messages[i];
             this.messages.unshift({
               userID: message.userProfile._id,
@@ -602,6 +608,9 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewInit {
               time: message.message.time,
               displayLastInfo: false
             });
+            if(previousMessageID !== message.userProfile._id){
+              this.messages[0].displayLastInfo = true;
+            }
           }
           this.previousTimeSeq = this.messages[0].time;
         }

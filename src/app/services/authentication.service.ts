@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { Http, Headers, URLSearchParams } from '@angular/http';
@@ -14,8 +14,17 @@ export class AuthenticationService {
   myID: string;
   authToken: string;
   code: string;
+  private tokenStatus: BehaviorSubject<any> = new BehaviorSubject(null);
   constructor(private http: Http, private location: Location, private router: Router) {
-
+    if (this.loggedIn()) {
+      this.tokenStatus.next({
+        isAdded: true
+      })
+    } else {
+      this.tokenStatus.next({
+        isAdded: false
+      })
+    }
   }
   registerUser(user) {
     let headers = new Headers();
@@ -40,14 +49,29 @@ export class AuthenticationService {
 
   storeToken(token: string) {
     localStorage.setItem('id_token', token);
+    if (this.loggedIn()) {
+      this.tokenStatus.next({
+        isAdded: true
+      })
+    } else {
+      this.tokenStatus.next({
+        isAdded: false
+      })
+    }
+
   }
+
+  getTokenStatus(){
+    return this.tokenStatus.asObservable();
+  }
+
   loadToken() {
     const token = localStorage.getItem('id_token');
     this.authToken = token;
   }
 
   loggedIn() {
-    return tokenNotExpired();
+    return tokenNotExpired(null, localStorage.getItem("id_token"))
   }
 
   logout() {
