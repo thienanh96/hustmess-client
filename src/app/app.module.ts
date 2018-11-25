@@ -21,7 +21,9 @@ import { ComponentCommunicationService } from './services/component-communicatio
 import { SearchRoomchatPipe } from './search-roomchat.pipe';
 import { MessageComponent } from './components/message/message.component';
 import { TextareaAutosizeModule } from 'ngx-textarea-autosize';
-import { TimeAgoPipe } from 'time-ago-pipe';
+
+import { TimeAgoPipe } from './time-ago.pipe';
+
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { InputComponent } from './components//input/input.component';
 import { TimeagoPipe } from './timeago.pipe';
