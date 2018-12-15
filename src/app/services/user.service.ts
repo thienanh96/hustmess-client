@@ -21,12 +21,20 @@ export class UserService {
     return this.http.get('http://localhost:3333/user/many?quality=' + quality , { headers: headers }).pipe(map(res => res.json()));
   }
 
+  getAllUsers(){
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    this.authService.loadToken();
+    headers.append('Authorization', this.authService.authToken);
+    return this.http.get('http://localhost:3333/user/all',{ headers: headers }).pipe(map(res => res.json()));
+  }
+
   searchUsers(searchTerm: string,typeUser: string){
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     this.authService.loadToken();
     headers.append('Authorization', this.authService.authToken);
-    return this.http.get('http://localhost:3333/user//search/friends?termsearch=' + searchTerm +'&typeuser=' + typeUser, { headers: headers }).pipe(map(res => res.json()));
+    return this.http.get('http://localhost:3333/user/search/friends?termsearch=' + searchTerm +'&typeuser=' + typeUser, { headers: headers }).pipe(map(res => res.json()));
   }
 
   getUser(quality: string,userID: string){

@@ -20,4 +20,21 @@ export class FriendService {
     headers.append('Authorization', this.authService.authToken);
     return this.http.get('http://localhost:3333/friend/many?approved=' + approved, { headers: headers }).pipe(map(res => res.json()));
   }
+
+  addFriend(id){
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    this.authService.loadToken();
+    var user = { "secondUser" : id};
+    headers.append('Authorization', this.authService.authToken);
+    return this.http.post('http://localhost:3333/friend/', user , { headers: headers }).pipe(map(res => res.json()));
+  }
+
+  deleteFriend(id){
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    this.authService.loadToken();
+    headers.append('Authorization', this.authService.authToken);
+    return this.http.delete('http://localhost:3333/friend?firstuser='+id, { headers: headers }).pipe(map(res => res.json()));
+  }
 }
