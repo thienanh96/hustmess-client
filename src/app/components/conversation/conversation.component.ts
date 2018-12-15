@@ -174,7 +174,9 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewInit {
               index++;
             }
             if(this.messages[messagesLength - 1].userID + '' === this.myID && !this.confirmation.seen){
+              console.log('check snt')
               this.confirmation.sent = true;
+              this.confirmation.received = false;
             }
             this.previousTimeSeq = this.messages[0].time;
             let scrollElement = document.getElementById('conversation-body');
@@ -195,6 +197,7 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewInit {
         if (data.status === 'sending') {
           this.confirmation.sending = true;
         } else if (data.status === 'sent') {
+          this.confirmation.received = false;
           let contentText = data.contentText;
           let contentFile = data.contentFile;
           let fileType = data.fileType;

@@ -33,6 +33,7 @@ export class RoomchatUserService {
   }
 
   deleteUserFromRoomchat(roomchatID, userID) {
+    console.log('delete user_',roomchatID,userID)
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     this.authService.loadToken();
@@ -55,4 +56,5 @@ export class RoomchatUserService {
     headers.append('Authorization', this.authService.authToken);
     return this.http.put('http://localhost:3333/roomchatuser?roomchatid=' + roomchatID + '&userid=' + userID + '&type=delete-assign-admin', {}, { headers: headers }).pipe(map(res => res.json()));
   }
+
 }

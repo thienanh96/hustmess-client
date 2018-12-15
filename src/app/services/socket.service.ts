@@ -172,6 +172,12 @@ export class SocketService {
     })
   }
 
+  leaveRoomchat(roomchatID){
+    this.socket.emit('leave-roomchat',{
+      roomchatID: roomchatID
+    })
+  }
+
 
   createRoomchat(userIDs,roomchatID,userZone){
     this.socket.emit('create-roomchat',{
@@ -273,11 +279,33 @@ export class SocketService {
 
 
 
-  emitAddUsersToGroup(roomchatID: string){
+  emitAddUsersToGroup(roomchatID: string,addedUserID: Array<string>){
     this.socket.emit('add-users-to-roomchat',{
-      roomchatID: roomchatID
+      roomchatID: roomchatID,
+      addedUserID: addedUserID
     })
   }
+
+
+  emitDeleteUsersFromGroup(roomchatID: string,deletedUserID: string){
+    this.socket.emit('delete-user-from-roomchat',{
+      roomchatID: roomchatID,
+      deletedUserID: deletedUserID
+    })
+  }
+
+  receiveDeleteUsersFromGroup(){
+    let observable = new Observable<any>(observer => {
+      this.socket.on('delete-user-from-roomchat', (data) => {
+        observer.next(data);
+      });
+      return () => {
+        this.socket.disconnect();
+      };
+    })
+    return observable;
+  }
+
 
   receiveAddUsersToGroup(){
     let observable = new Observable<any>(observer => {

@@ -187,7 +187,7 @@ export class LastmessageComponent implements OnInit {
         this.announceModal.deleteRoomchat.show = true;
         this.announceModal.deleteRoomchat.fail = true;
       }
-    })
+    });
   }
 
   markAsUnread() {

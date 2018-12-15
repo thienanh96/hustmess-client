@@ -154,6 +154,7 @@ export class AppComponent implements OnInit {
 
     this.socketService.confirmReceiveMessage().subscribe(data => {
       if (!data) return;
+      console.log('da nhan tin nhan!!!!')
       this.componentCommunicationService.setData({
         fromComponent: 'app',
         toComponent: 'conversation',
@@ -238,12 +239,22 @@ export class AppComponent implements OnInit {
 
     this.socketService.receiveAddUsersToGroup().subscribe(data => {
       if (!data) return;
+      if(data.addedUserID.includes(this.myID + '')){
+        this.socketService.joinRoomchat(data.roomchatID);
+      }
       return this.componentCommunicationService.setData({
         fromComponent: 'app',
         toComponent: 'info-conversation',
         roomchatID: data.roomchatID,
         type: 'add-users-to-roomchat'
       })
+    })
+
+    this.socketService.receiveDeleteUsersFromGroup().subscribe(data => {
+      if (!data) return;
+      if(this.myID +'' === data.deletedUserID + ''){
+        this.socketService.leaveRoomchat(data.roomchatID);
+      }
     })
 
     this.socketService.receiveArrangeRoomchats().subscribe(data => {
