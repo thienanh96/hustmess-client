@@ -1,15 +1,73 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit} from '@angular/core';
+import { UserService } from '../../services/user.service';
+import { FriendService } from '../../services/friend.service';
+declare var $:any;
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.css']
 })
 export class ContactsComponent implements OnInit {
+  searchTerm: string = '';
+  contacts = [];
+  notAcceptedFriends = [];
+  acceptedFriends = [];
 
-  constructor() { }
-
+  constructor(private userService: UserService,
+              private friendService: FriendService) { 
+  }
+  
   ngOnInit() {
+    this.loadContacts();
+  }
+ 
+  async loadFriends(){
+    var data1 = await this.friendService.getFriends("true").toPromise();
+    this.acceptedFriends = data1.friends;
+    var data2 = await this.friendService.getFriends("false").toPromise();
+    this.notAcceptedFriends = data2.friends;
+  }
+  async loadContacts(){
+    await this.loadFriends();
+    console.log(this.acceptedFriends);
+    var data = await this.userService.getAllUsers().toPromise();
+    if (data.success){
+      this.contacts = data.users;
+      for (let i=0;i<this.contacts.length;i++){
+          if (this.acceptedFriends.includes(this.contacts[i]._id)) this.contacts[i].acceptedFriend = true
+          else if (this.notAcceptedFriends.includes(this.contacts[i]._id)) this.contacts[i].notAcceptedFriend = true
+          else this.contacts[i].notFriend = true;
+      }  
+    } else {
+
+    }
   }
 
+  async delete(user,x,i){
+    var data = await this.friendService.deleteFriend(user._id).toPromise();
+    if (data.success){
+      this.contacts[i].notFriend = true;
+      this.contacts[i].notAcceptedFriend = false;
+      this.contacts[i].acceptedFriend = false;
+      var btn = $('#'+user._id+x);
+      console.log(btn)
+      btn.removeClass()
+      btn.addClass("btn btn-lg btn-primary");
+      btn.text("Kết bạn");
+    }
+  }
+
+  async add(user,i){
+    var data = await this.friendService.addFriend(user._id).toPromise();
+    console.log(data)
+    if (data.success){
+      this.contacts[i].notAcceptedFriend = true;
+      this.contacts[i].notFriend = false;
+      this.contacts[i].acceptedFriend = false;
+      var btn = $('#'+user._id+'1');
+      btn.removeClass()
+      btn.addClass("btn btn-lg btn-info");
+      btn.text("Đã gửi lời mời");
+    }
+  }
 }

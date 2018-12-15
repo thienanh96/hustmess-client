@@ -7,7 +7,7 @@ import { map, filter, switchMap, catchError } from 'rxjs/operators';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const PASSWORD_REGEX = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
-const PHONENUMBER_REGEX = /(09|01[2|6|8|9])+([0-9]{8})\b/g
+const PHONENUMBER_REGEX = /(0[3|5|7|8|9])+([0-9]{8})\b/;
 @Component({
   selector: 'app-authentication',
   templateUrl: './authentication.component.html',

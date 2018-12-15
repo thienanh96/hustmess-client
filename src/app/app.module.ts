@@ -11,7 +11,7 @@ import { AuthenticationComponent } from './components/authentication/authenticat
 import { AuthenticationService } from './services/authentication.service';
 import { SocketService } from './services/socket.service';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
-import {HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { HomeComponent } from './components/home/home.component';
 import { RoomchatComponent } from './components/roomchat/roomchat.component';
@@ -19,6 +19,7 @@ import { ConversationComponent } from './components/conversation/conversation.co
 import { LastmessageComponent } from './components/lastmessage/lastmessage.component';
 import { ComponentCommunicationService } from './services/component-communication.service';
 import { SearchRoomchatPipe } from './search-roomchat.pipe';
+import { SearchContactsPipe } from './search-contacts.pipe';
 import { MessageComponent } from './components/message/message.component';
 import { TextareaAutosizeModule } from 'ngx-textarea-autosize';
 
@@ -36,6 +37,7 @@ import { InfoConversationComponent } from './components/info-conversation/info-c
 import { ServicesComponent } from './components/services/services.component';
 import { AnswerComponent } from './components/answer/answer.component';
 import { AuthGuard } from './guard/auth.guard';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const appRoutes: Routes = [
   // {path:'newfeeds', component: },
@@ -62,7 +64,8 @@ const appRoutes: Routes = [
   { path: 'infoconversation/:roomchatid', component: InfoConversationComponent, canActivate: [AuthGuard]},
   { path: 'newmessage', component: NewMessageComponent, canActivate: [AuthGuard]},
   { path: 'services/:id', component: ServicesComponent, canActivate: [AuthGuard]},
-  { path: 'answer/:id', component: AnswerComponent, canActivate: [AuthGuard]}
+  { path: 'answer/:id', component: AnswerComponent, canActivate: [AuthGuard]},
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]}
   // {
   //   path: 'profile/:id', component: ProfileComponent, canActivate: [AuthGuard],children: [{ path: 'post/:postID', component: PostComponent }]
   // }
@@ -81,6 +84,7 @@ const appRoutes: Routes = [
     ConversationComponent,
     LastmessageComponent,
     SearchRoomchatPipe,
+    SearchContactsPipe,
     MessageComponent,
     InputComponent,
     TimeAgoPipe,
@@ -88,7 +92,8 @@ const appRoutes: Routes = [
     NewMessageComponent,
     InfoConversationComponent,
     ServicesComponent,
-    AnswerComponent
+    AnswerComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

@@ -55,6 +55,7 @@ export class InfoConversationComponent implements OnInit {
     this.getRoomchatSubscription = this.roomchatService.getRoomchat(this.roomchatID).subscribe(data => {
       if (data && data.success) {
         this.profileImage = data.roomchat.firstUserInRoomchat.profileImage.lowQuality;
+        console.log(data.roomchat)
         this.roomchatName = this.processRoomchatName(data.roomchat.firstUserInRoomchat.username, data.roomchat.numberOfUserInRoomchat - 1, data.roomchat.typeRoomchat);
         this.myID = data.myID;
       }
