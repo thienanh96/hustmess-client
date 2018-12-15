@@ -30,6 +30,15 @@ export class FriendService {
     return this.http.post('http://localhost:3333/friend/', user , { headers: headers }).pipe(map(res => res.json()));
   }
 
+  acceptFriend(id){
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    this.authService.loadToken();
+    console.log(id);
+    headers.append('Authorization', this.authService.authToken);
+    return this.http.put("http://localhost:3333/friend?id="+ id, {"approved" : true}  , { headers: headers }).pipe(map(res => res.json()));
+  }
+
   deleteFriend(id){
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');

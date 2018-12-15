@@ -5,7 +5,7 @@
             <i class="fas fa-cog" style="font-size:30px;margin-top:8px"></i>
           </div>
           <div class="contact-header-label" id="contact-header-label">
-            <div style="margin-top: 10px">Liên lạc</div>
+            <h3 style="margin-top: 10px">Liên lạc</h3>
           </div>
           <div id="contact-header-next" class="contact-header-next" style="display: none;">
             <i class="fas fa-chevron-right" style="font-size:30px;margin-top:8px"></i>
@@ -28,7 +28,8 @@
                               {{contact.username}}
                             </div>
                           </div>
-                          <button id="{{contact._id}}3" *ngIf="contact.notAcceptedFriend"  (click)="delete(contact,3,i)" type="button" class="btn btn-info btn-lg" >Đã yêu cầu</button>
+                          <button id="{{contact._id}}4" *ngIf="contact.notAcceptedFriendFirst"  (click)="accept(contact,4,i)" type="button" class="btn btn-success btn-lg" >Đồng ý</button>
+                          <button id="{{contact._id}}3" *ngIf="contact.notAcceptedFriendSecond"  (click)="delete(contact,3,i)" type="button" class="btn btn-info btn-lg" >Đã yêu cầu</button>
                           <button id="{{contact._id}}2" *ngIf="contact.acceptedFriend" (click)="delete(contact,2,i)" type="button" class="btn btn-warning btn-lg" >Huỷ kết bạn</button>
                           <button id="{{contact._id}}1" *ngIf="contact.notFriend" (click)="add(contact,i)" type="button" class="btn btn-primary btn-lg">Kết bạn</button>
                         </div>

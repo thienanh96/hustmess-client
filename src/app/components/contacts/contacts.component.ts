@@ -10,7 +10,8 @@ declare var $:any;
 export class ContactsComponent implements OnInit {
   searchTerm: string = '';
   contacts = [];
-  notAcceptedFriends = [];
+  notAcceptedFriendsFirst = [];
+  notAcceptedFriendsSecond = [];
   acceptedFriends = [];
 
   constructor(private userService: UserService,
@@ -25,7 +26,8 @@ export class ContactsComponent implements OnInit {
     var data1 = await this.friendService.getFriends("true").toPromise();
     this.acceptedFriends = data1.friends;
     var data2 = await this.friendService.getFriends("false").toPromise();
-    this.notAcceptedFriends = data2.friends;
+    this.notAcceptedFriendsFirst = data2.friendsFirst;
+    this.notAcceptedFriendsSecond = data2.friendsSecond;
   }
   async loadContacts(){
     await this.loadFriends();
@@ -35,7 +37,8 @@ export class ContactsComponent implements OnInit {
       this.contacts = data.users;
       for (let i=0;i<this.contacts.length;i++){
           if (this.acceptedFriends.includes(this.contacts[i]._id)) this.contacts[i].acceptedFriend = true
-          else if (this.notAcceptedFriends.includes(this.contacts[i]._id)) this.contacts[i].notAcceptedFriend = true
+          else if (this.notAcceptedFriendsFirst.includes(this.contacts[i]._id)) this.contacts[i].notAcceptedFriendFirst = true
+          else if (this.notAcceptedFriendsSecond.includes(this.contacts[i]._id)) this.contacts[i].notAcceptedFriendSecond = true
           else this.contacts[i].notFriend = true;
       }  
     } else {
@@ -47,7 +50,8 @@ export class ContactsComponent implements OnInit {
     var data = await this.friendService.deleteFriend(user._id).toPromise();
     if (data.success){
       this.contacts[i].notFriend = true;
-      this.contacts[i].notAcceptedFriend = false;
+      this.contacts[i].notAcceptedFriendFirst = false;
+      this.contacts[i].notAcceptedFriendSecond = false;
       this.contacts[i].acceptedFriend = false;
       var btn = $('#'+user._id+x);
       console.log(btn)
@@ -57,11 +61,27 @@ export class ContactsComponent implements OnInit {
     }
   }
 
+  async accept(user,x,i){
+    var data = await this.friendService.acceptFriend(user._id).toPromise();
+    if (data.success){
+      this.contacts[i].notFriend = false;
+      this.contacts[i].notAcceptedFriendFirst = false;
+      this.contacts[i].notAcceptedFriendSecond = false;
+      this.contacts[i].acceptedFriend = true;
+      var btn = $('#'+user._id+x);
+      console.log(btn)
+      btn.removeClass()
+      btn.addClass("btn btn-lg btn-warning");
+      btn.text("Huỷ kết bạn");
+    }
+  }
+
   async add(user,i){
     var data = await this.friendService.addFriend(user._id).toPromise();
     console.log(data)
     if (data.success){
-      this.contacts[i].notAcceptedFriend = true;
+      this.contacts[i].notAcceptedFriendSecond = true;
+      this.contacts[i].notAcceptedFriendFirst = false;
       this.contacts[i].notFriend = false;
       this.contacts[i].acceptedFriend = false;
       var btn = $('#'+user._id+'1');
@@ -70,4 +90,5 @@ export class ContactsComponent implements OnInit {
       btn.text("Đã gửi lời mời");
     }
   }
+
 }
