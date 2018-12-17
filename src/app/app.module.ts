@@ -40,7 +40,7 @@ import { AuthGuard } from "./guard/auth.guard";
 import { ProfileComponent } from "./components/profile/profile.component";
 
 const appRoutes: Routes = [
-  // {path:'newfeeds', component: },
+  { path: "", redirectTo: "/home", pathMatch: 'full' },
   { path: "authenticate", component: AuthenticationComponent },
   {
     path: "contacts",
