@@ -18,6 +18,10 @@ export class NavbarComponent implements OnInit {
   previousTimeSeq: number = 0;
   loadingNotifications: boolean = false;
   roomchatNotifications: Array<string> = [];
+  friendRequestInfo = {
+    fromUserID: '',
+    destUserID: ''
+  }
   constructor(private componentCommunicationService: ComponentCommunicationService,
     private cdRef: ChangeDetectorRef,
     private router: Router,
@@ -56,6 +60,18 @@ export class NavbarComponent implements OnInit {
             break;
           }
         }
+      } else if (data && data.fromComponent === 'app' && data.type === 'friend-request'){
+        let preNotification = {
+          detail: {},
+          fromUserInfo: data.data.fromUserInfo,
+          toUserID: data.data.destUserID,
+          time: 0,
+          seen: false,
+          type:'friend-request'
+        }
+        let finalNotification = this.processNotificationObject(preNotification);
+        this.notifications.unshift(finalNotification)
+        this.numberOfUnreadNotifications++;
       }
     })
   }
@@ -84,11 +100,11 @@ export class NavbarComponent implements OnInit {
             seen: notificationObj.notification.seen,
             type: notificationObj.notification.detail.typeNotification
           }
-          console.log("pre_____: ", data)
           preNotification.fromUserInfo.profileImage = preNotification.fromUserInfo.profileImage.lowQuality;
           let finalNotification = this.processNotificationObject(preNotification);
           this.notifications.push(finalNotification)
         }
+        this.numberOfUnreadNotifications = this.notifications.filter(el => !el.seen).length;
         this.previousTimeSeq = this.notifications[this.notifications.length - 1].time;
 
       }
@@ -118,6 +134,10 @@ export class NavbarComponent implements OnInit {
     }
   }
 
+  onClickNavigateToHome(){
+    return this.router.navigate(["home"]);
+  }
+
   processNotificationObject(notificationObject) {
     let typeNotification = notificationObject.type;
     let fromUserInfo = notificationObject.fromUserInfo;
@@ -140,10 +160,14 @@ export class NavbarComponent implements OnInit {
         seen: notificationObject.seen,
         profileImage: fromUserInfo.profileImage
       }
-    } else {
+    } else if(typeNotification === 'friend-request') {
       return {
-        content: '',
-        time: time
+        content: '@'+fromUserInfo.username+' vừa gửi lời mới kết bạn, ấn để xem',
+        type: 'friend-request',
+        username: fromUserInfo.username,
+        profileImage: fromUserInfo.profileImage,
+        time: time,
+        seen: notificationObject.seen
       }
     }
   }

@@ -277,6 +277,25 @@ export class SocketService {
     })
   }
 
+  emitSendFriendRequest(fromUserInfo,destUserID){
+    this.socket.emit('friend-request',{
+      destUserID: destUserID,
+      fromUserInfo: fromUserInfo
+    })
+  }
+
+  receiveFriendRequest(){
+    let observable = new Observable<any>(observer => {
+      this.socket.on('friend-request', (data) => {
+        observer.next(data);
+      });
+      return () => {
+        this.socket.disconnect();
+      };
+    })
+    return observable;
+  }
+
 
 
   emitAddUsersToGroup(roomchatID: string,addedUserID: Array<string>){
