@@ -1,64 +1,132 @@
 <div class="container">
-    <div style="margin-top:74px">
-        <div class="contact-header">
-          <div class="contact-header-label" style="margin-top: 10px" id="contact-header-label">
-            <i style="font-size: 110%" class="fas fa-info-circle"></i>
-            Thông tin cá nhân
-          </div>
-          <div id="contact-header-next" class="contact-header-next" style="display: none;">
-            <i class="fas fa-chevron-right" style="font-size:30px;margin-top:8px"></i>
-          </div>
-        </div>
-    
+  <div style="margin-top:74px">
+    <div class="contact-header">
+      <div class="contact-header-label" style="margin-top: 10px" id="contact-header-label">
+        <i style="font-size: 110%" class="fas fa-info-circle"></i>
+        Thông tin cá nhân
+      </div>
+      <div id="contact-header-next" class="contact-header-next" style="display: none;">
+        <i class="fas fa-chevron-right" style="font-size:30px;margin-top:8px"></i>
+      </div>
     </div>
+
+  </div>
   <div class="row">
-      <div class="col col-md-4 col-lg-4">
-          <img style="width: 100%" src="{{avtSrc}}">
-      </div>
-      <div class="col col-md-8 col-lg-8">
-          <table class ="table table-hover table-responsive">
-              <tbody>
-                <tr>
-                    <div style="width:100%;height:70px;border-bottom: solid thin #e7e7e7;">
-                          <div style="width:70%;font-size:20px;height:100%;margin-left:20px;float: left;display: flex;align-items: center">
-                            <i class="fas fa-envelope" style="margin-right:10px"></i> {{email}}
-                          </div>
-                    </div>
-                </tr>
-                <tr>
-                    <div style="width:100%;height:70px;border-bottom: solid thin #e7e7e7;">
-                        <div style="width:70%;font-size:20px;height:100%;margin-left:22px;float: left;display: flex;align-items: center">
-                            <i class="fas fa-user" style="margin-right:10px"></i> {{username}}
-                        </div>
-                    </div>
-                </tr>
-                <tr>
-                    <div style="width:100%;height:70px;border-bottom: solid thin #e7e7e7;">
-                          <div style="width:70%;font-size:20px;height:100%;margin-left:20px;float: left;display: flex;align-items: center">
-                            <i class="fas fa-phone" style="margin-right:10px"></i> {{phoneNumber}}
-                          </div>
-                    </div>
-                </tr>
-                <tr>
-                    <div style="width:100%;height:70px;border-bottom: solid thin #e7e7e7;">
-                          <div style="width:70%;font-size:20px;height:100%;margin-left:16px;float: left;display: flex;align-items: center">
-                              <i class="fa fa-users" style="margin-right:10px"></i> {{class}}
-                          </div>
-                    </div>
-                </tr>
-                <tr>
-                    <div style="width:100%;height:70px;border-bottom: solid thin #e7e7e7;">
-                          <div style="width:70%;font-size:20px;height:100%;margin-left:20px;float: left;display: flex;align-items: center">
-                              <i class="fa fa-graduation-cap" style="margin-right:10px"></i> {{grade}}
-                          </div>
-                    </div>
-                </tr>
-              </tbody>
-          </table>
-      </div>
+    <div class="col col-md-4 col-lg-4">
+      <img style="width: 100%" src="{{avtSrc}}">
+      <a style="text-decoration: none;cursor: pointer" (click)="openModifyUserProfileModal()">
+        <i class="fas fa-user-edit"></i>
+        Chỉnh sửa
+      </a>
+    </div>
+    <div class="col col-md-8 col-lg-8">
+      <table class="table table-hover table-responsive">
+        <tbody>
+          <tr>
+            <div style="width:100%;height:70px;border-bottom: solid thin #e7e7e7;">
+              <div style="width:70%;font-size:20px;height:100%;margin-left:20px;float: left;display: flex;align-items: center">
+                <i class="fas fa-envelope" style="margin-right:10px"></i> {{email}}
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div style="width:100%;height:70px;border-bottom: solid thin #e7e7e7;">
+              <div style="width:70%;font-size:20px;height:100%;margin-left:22px;float: left;display: flex;align-items: center">
+                <i class="fas fa-user" style="margin-right:10px"></i> {{username}}
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div style="width:100%;height:70px;border-bottom: solid thin #e7e7e7;">
+              <div style="width:70%;font-size:20px;height:100%;margin-left:20px;float: left;display: flex;align-items: center">
+                <i class="fas fa-phone" style="margin-right:10px"></i> {{phoneNumber}}
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div style="width:100%;height:70px;border-bottom: solid thin #e7e7e7;">
+              <div style="width:70%;font-size:20px;height:100%;margin-left:16px;float: left;display: flex;align-items: center">
+                <i class="fa fa-users" style="margin-right:10px"></i> {{class}}
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div style="width:100%;height:70px;border-bottom: solid thin #e7e7e7;">
+              <div style="width:70%;font-size:20px;height:100%;margin-left:20px;float: left;display: flex;align-items: center">
+                <i class="fa fa-graduation-cap" style="margin-right:10px"></i> {{grade}}
+              </div>
+            </div>
+          </tr>
+          <tr>
+            <div style="width:100%;height:70px;border-bottom: solid thin #e7e7e7;">
+              <div style="width:70%;font-size:20px;height:100%;margin-left:20px;float: left;display: flex;align-items: center">
+                <i class="fa fa-graduation-cap" style="margin-right:10px"></i> {{mssv}}
+              </div>
+            </div>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
-
-
-
+<div *ngIf="showModifyUserProfile" id="modify-user-profile-modal" class="custom-modal">
+  <div class="custom-modal-content" style="height: 444px;width: 45%">
+    <div style="background-color: #e7e7e7;border-bottom:1px solid;border-color:#e7e7e7;padding-top:0px;display: flex;align-content: center;width: 100%;height: 57px">
+      <div style="margin-left:10px;margin-top:14px;font-size: 20px">
+        Cập nhật thông tin cá nhân
+      </div>
+    </div>
+    <div class="modal-options-content" style="height: 323px;">
+      <div style="width:100%;font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
+          line-height: 1.50;font-size: 17px;font-weight: 500;text-align: center;padding: 10px">
+        <form style="width:100%">
+          <div class="form-group row">
+            <label for="email" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+              <input disabled type="email" [ngModelOptions]="{standalone: true}" [(ngModel)]="email"  class="form-control" id="email" placeholder="Email">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="username" class="col-sm-2 col-form-label">Username</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="username" id="email" placeholder="Username">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="phoneNumber" class="col-sm-2 col-form-label">Phone Number</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"  [(ngModel)]="phoneNumber" id="phoneNumber" placeholder="Phone Number">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="mssv" class="col-sm-2 col-form-label">MSSV</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="mssv" id="mssv" placeholder="MSSV">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="class" class="col-sm-2 col-form-label">Lớp</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="class" id="class" placeholder="Class">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="grade" class="col-sm-2 col-form-label">Khóa</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="grade" id="grade" placeholder="grade">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div style="width:100%;height: 61px;border-top:1px solid;border-color:#e7e7e7;">
+      <button (click)="updateProfile()" type="button" class="btn btn-info" style="float:right;width:80px;height: 40px;margin:10px">
+        Lưu
+      </button>
+      <button (click)="closeModifyUserProfileModal()" type="button" class="btn btn-danger" style="float:right;width:80px;height: 40px;margin:10px;margin-right:10px">
+        Hủy
+      </button>
+    </div>
+  </div>
+</div>

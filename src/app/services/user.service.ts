@@ -74,4 +74,12 @@ export class UserService {
     }
     return this.http.put('http://localhost:3333/user',body, { headers: headers }).pipe(map(res => res.json()));
   }
+
+  updateUserProfile(profile){
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    this.authService.loadToken();
+    headers.append('Authorization', this.authService.authToken);
+    return this.http.put('http://localhost:3333/user',profile, { headers: headers }).pipe(map(res => res.json()));
+  }
 }

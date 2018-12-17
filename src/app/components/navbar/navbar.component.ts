@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ComponentCommunicationService } from '../../services/component-communication.service';
 import { NotificationService } from '../../services/notification.service';
 import { AuthenticationService } from '../../services/authentication.service';
+import { FriendService } from '../../services/friend.service';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-navbar',
@@ -18,14 +19,17 @@ export class NavbarComponent implements OnInit {
   previousTimeSeq: number = 0;
   loadingNotifications: boolean = false;
   roomchatNotifications: Array<string> = [];
+  showAcceptFriendModal: boolean = false;
   friendRequestInfo = {
     fromUserID: '',
+    fromUserUsername: '',
     destUserID: ''
   }
   constructor(private componentCommunicationService: ComponentCommunicationService,
     private cdRef: ChangeDetectorRef,
     private router: Router,
     private authService: AuthenticationService,
+    private friendService: FriendService,
     private notificationService: NotificationService) { }
 
   ngOnInit() {
@@ -129,8 +133,13 @@ export class NavbarComponent implements OnInit {
         return this.router.navigate(['conversation', fromRoomchatID])
       }
 
-    } else {
-
+    } else if(typeNotification === 'friend-request'){
+      this.friendRequestInfo = {
+        fromUserID: notification.fromUserID,
+        fromUserUsername: notification.username,
+        destUserID: notification.toUserID
+      }
+      this.showAcceptFriendModal = true;
     }
   }
 
@@ -154,10 +163,12 @@ export class NavbarComponent implements OnInit {
       return {
         content: content,
         username: fromUserInfo.username,
+        fromUserID: fromUserInfo._id,
         type: 'incomming-message',
         fromRoomchatID: detail.fromRoomchatID,
         time: time,
         seen: notificationObject.seen,
+        toUserID: toUserID,
         profileImage: fromUserInfo.profileImage
       }
     } else if(typeNotification === 'friend-request') {
@@ -165,8 +176,10 @@ export class NavbarComponent implements OnInit {
         content: '@'+fromUserInfo.username+' vừa gửi lời mới kết bạn, ấn để xem',
         type: 'friend-request',
         username: fromUserInfo.username,
+        fromUserID: fromUserInfo._id,
         profileImage: fromUserInfo.profileImage,
         time: time,
+        toUserID: toUserID,
         seen: notificationObject.seen
       }
     }
@@ -211,6 +224,18 @@ export class NavbarComponent implements OnInit {
         }
       })
     }
+  }
+
+  acceptFriend(){
+    return this.friendService.acceptFriend(this.friendRequestInfo.fromUserID).subscribe(data => {
+      if(data && data.success){
+        this.showAcceptFriendModal = false;
+        return alert("Accepted @" + this.friendRequestInfo.fromUserUsername + "'s friend request successfully!" )
+      } else {
+        this.showAcceptFriendModal = false;
+        return alert("Error when accepting @" + this.friendRequestInfo.fromUserUsername + "'s friend request!" )
+      }
+    })
   }
 
   closeNotificationPopover($event) {

@@ -132,6 +132,7 @@ const appRoutes: Routes = [
     FormsModule,
     HttpClientModule,
     NgbModule,
+    FormsModule,
     ReactiveFormsModule,
     ClickOutsideModule,
     RouterModule.forRoot(appRoutes),
