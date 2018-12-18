@@ -10,7 +10,7 @@ export class SocketService {
   constructor() {
     this.socket = io(this.url)
   }
-  private url = 'http://localhost:3333';
+  private url = 'https://hustmess-server.herokuapp.com';
   private socket;
 
 
