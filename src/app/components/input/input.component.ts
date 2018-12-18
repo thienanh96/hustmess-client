@@ -80,7 +80,7 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
     });
   }
 
-  onChangeTextArea() {
+  onChangeTextArea(e) {
     this.timeTyping = Date.now();
     if (this.roomchatID) {
       let onTypingInterval = setInterval(() => {
