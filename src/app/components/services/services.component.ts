@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/co
 import { ComponentCommunicationService } from '../../services/component-communication.service';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute, RouterStateSnapshot } from '@angular/router';
+// import * as Peer from 'peerjs';
 import * as Peer from 'peerjs';
 import { UserService } from 'src/app/services/user.service';
 import { SocketService } from '../../services/socket.service';
