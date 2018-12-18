@@ -1,1 +1,1 @@
-export const DOMAIN = 'http://localhost:3333/';
+export const DOMAIN = 'https://hustmess-server.herokuapp.com/'
