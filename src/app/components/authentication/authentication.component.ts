@@ -50,6 +50,7 @@ export class AuthenticationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.authService.logout();
     this.registerForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], this.usernameValidator()),
       username: new FormControl('', [Validators.required]),

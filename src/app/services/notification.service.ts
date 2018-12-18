@@ -5,6 +5,8 @@ import { Observable, Subject, ReplaySubject, from, of, range } from 'rxjs';
 import { map, filter, switchMap, catchError } from 'rxjs/operators';
 import { tokenNotExpired } from 'angular2-jwt';
 import { AuthenticationService } from './authentication.service';
+import {DOMAIN} from '../../../src/domain';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -16,7 +18,7 @@ export class NotificationService {
     headers.append('Content-Type', 'application/json');
     this.authService.loadToken();
     headers.append('Authorization', this.authService.authToken);
-    return this.http.get('http://localhost:3333/notification/many?time=' + timeSeq + '&limit=' + limit, { headers: headers }).pipe(map(res => res.json()));
+    return this.http.get(DOMAIN + 'notification/many?time=' + timeSeq + '&limit=' + limit, { headers: headers }).pipe(map(res => res.json()));
   }
 
   getNumberOfUnreadNotifications() {
@@ -24,7 +26,7 @@ export class NotificationService {
     headers.append('Content-Type', 'application/json');
     this.authService.loadToken();
     headers.append('Authorization', this.authService.authToken);
-    return this.http.get('http://localhost:3333/notification/many/count', { headers: headers }).pipe(map(res => res.json()));
+    return this.http.get(DOMAIN + 'notification/many/count', { headers: headers }).pipe(map(res => res.json()));
   }
 
   updateNotifications(topTime: number,bottomTime: number){ 
@@ -36,7 +38,7 @@ export class NotificationService {
       topTime: topTime,
       bottomTime: bottomTime
     }
-    return this.http.put('http://localhost:3333/notification/',body, { headers: headers }).pipe(map(res => res.json()));
+    return this.http.put(DOMAIN + 'notification/',body, { headers: headers }).pipe(map(res => res.json()));
   }
 
   createNotifications(toUserID: string,detail: any,time: number){ 
@@ -49,6 +51,6 @@ export class NotificationService {
       detail: detail,
       time: time
     }
-    return this.http.post('http://localhost:3333/notification/',body, { headers: headers }).pipe(map(res => res.json()));
+    return this.http.post(DOMAIN + 'notification/',body, { headers: headers }).pipe(map(res => res.json()));
   }
 }

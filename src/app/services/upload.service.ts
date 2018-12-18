@@ -6,6 +6,7 @@ import { Observable, Subject, ReplaySubject, from, of, range } from 'rxjs';
 import { map, filter, switchMap, catchError } from 'rxjs/operators';
 import { tokenNotExpired } from 'angular2-jwt';
 import { AuthenticationService } from './authentication.service';
+import {DOMAIN} from '../../../src/domain';
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +18,13 @@ export class UploadService {
     let headers = new Headers();
     this.authService.loadToken();
     headers.append('Authorization', this.authService.authToken);
-    let req = new HttpRequest('POST', 'http://localhost:3333/uploads/files', formData, {
+    let req = new HttpRequest('POST', DOMAIN + 'uploads/files', formData, {
       reportProgress: true,
       headers: new HttpHeaders().set('Authorization', this.authService.authToken),
       params: new HttpParams().set('roomchatid', roomchatID)
     });
     return this.httpClient.request(req).pipe(map(event => this.getEventMessage(event, i)));
-    // return this.http.post('http://localhost:3333/uploads/files', formData, { headers: headers }).pipe(map(res => res.json()));
+    // return this.http.post(DOMAIN + 'uploads/files', formData, { headers: headers }).pipe(map(res => res.json()));
   }
 
   getEventMessage(event: HttpEvent<any>, index: Number) {
@@ -51,7 +52,7 @@ export class UploadService {
     headers.append('Content-Type', 'application/json');
     this.authService.loadToken();
     headers.append('Authorization', this.authService.authToken);
-    return this.http.get('http://localhost:3333/files/many?roomchatid=' + roomchatID + '&type=' + typeFile + '&time=' + timeSeq + '&limit=' + limit, { headers: headers }).pipe(map(res => res.json()));
+    return this.http.get(DOMAIN + 'files/many?roomchatid=' + roomchatID + '&type=' + typeFile + '&time=' + timeSeq + '&limit=' + limit, { headers: headers }).pipe(map(res => res.json()));
   }
 
   getFile(roomchatID: string, typeFile: string, fileID: number) {
@@ -59,7 +60,7 @@ export class UploadService {
     headers.append('Content-Type', 'application/json');
     this.authService.loadToken();
     headers.append('Authorization', this.authService.authToken);
-    return this.http.get('http://localhost:3333/files?roomchatid=' + roomchatID + '&type=' + typeFile + '&id=' + fileID, { headers: headers }).pipe(map(res => res.json()));
+    return this.http.get(DOMAIN + 'files?roomchatid=' + roomchatID + '&type=' + typeFile + '&id=' + fileID, { headers: headers }).pipe(map(res => res.json()));
   }
 
 }

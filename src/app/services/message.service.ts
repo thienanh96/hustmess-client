@@ -5,6 +5,8 @@ import { Observable, Subject, ReplaySubject, from, of, range } from 'rxjs';
 import { map, filter, switchMap, catchError } from 'rxjs/operators';
 import { tokenNotExpired } from 'angular2-jwt';
 import { AuthenticationService } from './authentication.service';
+import {DOMAIN} from '../../../src/domain';
+
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +20,7 @@ export class MessageService {
     headers.append('Content-Type', 'application/json');
     this.authService.loadToken();
     headers.append('Authorization', this.authService.authToken);
-    return this.http.get('http://localhost:3333/message/many?roomchatid=' + roomchatID + '&time=' + timeSeq + '&limit=' + limit, { headers: headers }).pipe(map(res => res.json()));
+    return this.http.get(DOMAIN + 'message/many?roomchatid=' + roomchatID + '&time=' + timeSeq + '&limit=' + limit, { headers: headers }).pipe(map(res => res.json()));
   }
 
   sendMessage(roomchatID, content, attach, fileType, fileName) {
@@ -33,7 +35,7 @@ export class MessageService {
       fileType: fileType,
       fileName: fileName
     }
-    return this.http.post('http://localhost:3333/message', body, { headers: headers }).pipe(map(res => res.json()));
+    return this.http.post(DOMAIN + 'message', body, { headers: headers }).pipe(map(res => res.json()));
   }
 
   updateMessages(roomchatID) {
@@ -41,7 +43,7 @@ export class MessageService {
     headers.append('Content-Type', 'application/json');
     this.authService.loadToken();
     headers.append('Authorization', this.authService.authToken);
-    return this.http.put('http://localhost:3333/message/many?roomchatid=' + roomchatID, {}, { headers: headers }).pipe(map(res => res.json()));
+    return this.http.put(DOMAIN + 'message/many?roomchatid=' + roomchatID, {}, { headers: headers }).pipe(map(res => res.json()));
   }
 
   deleteOneMessage(messageID) {
@@ -49,7 +51,7 @@ export class MessageService {
     headers.append('Content-Type', 'application/json');
     this.authService.loadToken();
     headers.append('Authorization', this.authService.authToken);
-    return this.http.delete('http://localhost:3333/message?messageid=' + messageID, { headers: headers }).pipe(map(res => res.json()));
+    return this.http.delete(DOMAIN + 'message?messageid=' + messageID, { headers: headers }).pipe(map(res => res.json()));
   }
 
   updateOneMessage(messageID) {
@@ -57,7 +59,7 @@ export class MessageService {
     headers.append('Content-Type', 'application/json');
     this.authService.loadToken();
     headers.append('Authorization', this.authService.authToken);
-    return this.http.put('http://localhost:3333/message?messageid=' + messageID, {}, { headers: headers }).pipe(map(res => res.json()));
+    return this.http.put(DOMAIN + 'message?messageid=' + messageID, {}, { headers: headers }).pipe(map(res => res.json()));
   }
 
 }

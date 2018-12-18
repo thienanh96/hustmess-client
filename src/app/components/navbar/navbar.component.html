@@ -3,8 +3,8 @@
     <div class="navbar-custom-brand">
       <img href="#" src="../../assets/logo.png" class="navbar-custom-image">
     </div>
-    <div class="navbar-icon">
-      <div *ngIf="authService.loggedIn()" (click)="openNotificationModal()" style="float:left;width:68px;height:36px;display: flex;align-items: center;justify-content: center;cursor: pointer;">
+    <div *ngIf="authService.loggedIn()" class="navbar-icon">
+      <div (click)="openNotificationModal()" style="float:left;width:68px;height:36px;display: flex;align-items: center;justify-content: center;cursor: pointer;">
         <a>
           <i id="notification-icon" class="fas fa-globe-africa" style="font-size:170%;margin-top:6px"></i>
         </a>
@@ -99,7 +99,7 @@
         <div style="width:50%;height:100%;float: left;display: flex;justify-content: center;align-items: center">
           <button (click)="acceptFriend()" class="btn btn-primary">Chấp nhận</button>
         </div>
-        <div style="width:50%;height:100%;float: left;display: flex;justify-content: center;align-items: center">
+        <div (click)="closeConfirmAcceptFriend()" style="width:50%;height:100%;float: left;display: flex;justify-content: center;align-items: center">
           <button class="btn btn-danger">Bỏ qua</button>
         </div>
       </div>

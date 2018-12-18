@@ -5,6 +5,8 @@ import { Observable, Subject, ReplaySubject, from, of, range } from 'rxjs';
 import { map, filter, switchMap, catchError } from 'rxjs/operators';
 import { tokenNotExpired } from 'angular2-jwt';
 import { AuthenticationService} from './authentication.service';
+import {DOMAIN} from '../../../src/domain';
+
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +24,7 @@ export class RoomchatService {
     let body = {
       name: name
     }
-    return this.http.post('http://localhost:3333/roomchat',body, { headers: headers}).pipe(map(res => res.json()));
+    return this.http.post(DOMAIN + 'roomchat',body, { headers: headers}).pipe(map(res => res.json()));
   }
 
   checkDuplicateRoomchat(userIDs){
@@ -33,7 +35,7 @@ export class RoomchatService {
     let body = {
       userIDs: userIDs
     }
-    return this.http.post('http://localhost:3333/roomchat/checkduplicate',body, { headers: headers}).pipe(map(res => res.json()));
+    return this.http.post(DOMAIN + 'roomchat/checkduplicate',body, { headers: headers}).pipe(map(res => res.json()));
   }
 
   getRoomchats(){
@@ -41,7 +43,7 @@ export class RoomchatService {
     headers.append('Content-Type', 'application/json');
     this.authService.loadToken();
     headers.append('Authorization', this.authService.authToken);
-    return this.http.get('http://localhost:3333/roomchat/many', { headers: headers }).pipe(map(res => res.json()));
+    return this.http.get(DOMAIN + 'roomchat/many', { headers: headers }).pipe(map(res => res.json()));
   }
 
   getRoomchat(roomchatID){
@@ -49,7 +51,7 @@ export class RoomchatService {
     headers.append('Content-Type', 'application/json');
     this.authService.loadToken();
     headers.append('Authorization', this.authService.authToken);
-    return this.http.get('http://localhost:3333/roomchat/one?roomchatid=' + roomchatID, { headers: headers }).pipe(map(res => res.json()));
+    return this.http.get(DOMAIN + 'roomchat/one?roomchatid=' + roomchatID, { headers: headers }).pipe(map(res => res.json()));
   }
 
   deleteRoomchat(roomchatID){
@@ -57,7 +59,7 @@ export class RoomchatService {
     headers.append('Content-Type', 'application/json');
     this.authService.loadToken();
     headers.append('Authorization', this.authService.authToken);
-    return this.http.delete('http://localhost:3333/roomchat?roomchatid=' + roomchatID, { headers: headers }).pipe(map(res => res.json()));
+    return this.http.delete(DOMAIN + 'roomchat?roomchatid=' + roomchatID, { headers: headers }).pipe(map(res => res.json()));
   }
 
   addSeenUsers(roomchatID,userID){
@@ -70,7 +72,7 @@ export class RoomchatService {
         isSeenBy: userID
       }
     }
-    return this.http.put('http://localhost:3333/roomchat?roomchatid=' + roomchatID,body, { headers: headers}).pipe(map(res => res.json()));
+    return this.http.put(DOMAIN + 'roomchat?roomchatid=' + roomchatID,body, { headers: headers}).pipe(map(res => res.json()));
   }
 
   resetSeenUsers(roomchatID){
@@ -81,6 +83,6 @@ export class RoomchatService {
     let body = {
       isSeenBy: []
     }
-    return this.http.put('http://localhost:3333/roomchat?roomchatid=' + roomchatID,body, { headers: headers}).pipe(map(res => res.json()));
+    return this.http.put(DOMAIN + 'roomchat?roomchatid=' + roomchatID,body, { headers: headers}).pipe(map(res => res.json()));
   }
 }

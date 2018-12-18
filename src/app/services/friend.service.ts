@@ -5,6 +5,8 @@ import { Observable, Subject, ReplaySubject, from, of, range } from 'rxjs';
 import { map, filter, switchMap, catchError } from 'rxjs/operators';
 import { tokenNotExpired } from 'angular2-jwt';
 import { AuthenticationService } from './authentication.service';
+import {DOMAIN} from '../../../src/domain';
+
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +20,7 @@ export class FriendService {
     headers.append('Content-Type', 'application/json');
     this.authService.loadToken();
     headers.append('Authorization', this.authService.authToken);
-    return this.http.get('http://localhost:3333/friend/many?approved=' + approved, { headers: headers }).pipe(map(res => res.json()));
+    return this.http.get(DOMAIN + 'friend/many?approved=' + approved, { headers: headers }).pipe(map(res => res.json()));
   }
 
   addFriend(id){
@@ -27,7 +29,7 @@ export class FriendService {
     this.authService.loadToken();
     var user = { "secondUser" : id};
     headers.append('Authorization', this.authService.authToken);
-    return this.http.post('http://localhost:3333/friend/', user , { headers: headers }).pipe(map(res => res.json()));
+    return this.http.post(DOMAIN + 'friend/', user , { headers: headers }).pipe(map(res => res.json()));
   }
 
   acceptFriend(id){
@@ -44,6 +46,6 @@ export class FriendService {
     headers.append('Content-Type', 'application/json');
     this.authService.loadToken();
     headers.append('Authorization', this.authService.authToken);
-    return this.http.delete('http://localhost:3333/friend?firstuser='+id, { headers: headers }).pipe(map(res => res.json()));
+    return this.http.delete(DOMAIN + 'friend?firstuser='+id, { headers: headers }).pipe(map(res => res.json()));
   }
 }

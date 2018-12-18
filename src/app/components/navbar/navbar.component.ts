@@ -238,6 +238,10 @@ export class NavbarComponent implements OnInit {
     })
   }
 
+  closeConfirmAcceptFriend(){
+    return this.showAcceptFriendModal = false;
+  }
+
   closeNotificationPopover($event) {
     let excludeID = $event.target.id;
     if (excludeID === 'notification-icon' || excludeID === 'count-notification-icon') return;
