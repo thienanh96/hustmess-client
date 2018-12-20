@@ -30,8 +30,9 @@ export class AnswerComponent implements OnInit, AfterViewInit {
     
     this.peer = new Peer({
       path: '/peerjs',
-      host: 'localhost',
-      port: 9000
+      host: 'hustmess-peer-server.herokuapp.com',
+      port: 443,
+      secure: true
     });
     let bigStream = <HTMLVideoElement>document.getElementById('big-stream');
     bigStream.height = window.innerHeight ;
