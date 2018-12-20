@@ -38,7 +38,7 @@ export class FriendService {
     this.authService.loadToken();
     console.log(id);
     headers.append('Authorization', this.authService.authToken);
-    return this.http.put("http://localhost:3333/friend?id="+ id, {"approved" : true}  , { headers: headers }).pipe(map(res => res.json()));
+    return this.http.put(DOMAIN + "friend?id="+ id, {"approved" : true}  , { headers: headers }).pipe(map(res => res.json()));
   }
 
   deleteFriend(id){
