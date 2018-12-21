@@ -65,6 +65,7 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewInit {
   loadingMessages: boolean = false;
   showConversationInfo: boolean = true;
   showNavPrevious: boolean = false;
+  showWaitForCallModal: boolean = false;
   @HostListener("window:resize", ["$event"])
   onResize(event) {
     let inputHeight = document.getElementById("input-component").clientHeight;
@@ -120,9 +121,9 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewInit {
     private userService: UserService,
     private roomchatService: RoomchatService
   ) {
-    this.router.routeReuseStrategy.shouldReuseRoute = function(){
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
-   }
+    }
   }
 
   ngOnInit() {
@@ -326,7 +327,7 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewInit {
           //khi co tin nhan moi den
           this.roomchatService
             .resetSeenUsers(this.roomchatID)
-            .subscribe(data => {});
+            .subscribe(data => { });
           if (this.messages.length !== 0) {
             this.messages[this.messages.length - 1].displayLastInfo = false;
           }
@@ -448,6 +449,8 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewInit {
             break;
           }
         }
+      } else if (data.fromComponent === 'app' && data.type === 'close-wait-call-modal') {
+        this.showWaitForCallModal = false;
       }
     });
 
@@ -487,7 +490,7 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewInit {
     console.log("run!!");
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() { }
 
   ngOnDestroy(): void {
     clearInterval(this.receiveTimestampInterval);
@@ -603,6 +606,7 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewInit {
 
   openCallWindow() {
     if (this.usersInRoomchat.length > 2) return;
+    this.showWaitForCallModal = true;
     this.componentCommunicationService.setData({
       fromComponent: "conversation",
       type: "call-video",

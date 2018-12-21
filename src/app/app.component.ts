@@ -263,8 +263,13 @@ export class AppComponent implements OnInit {
       }
       if (this.connectedUserCall.length === 1) {
         this.calledUserIDs = [];
+        this.componentCommunicationService.setData({
+          fromComponent: "app",
+          toComponent: "conversation",
+          type: "close-wait-call-modal"
+        });
         return window.open(
-          "services/" + data.roomchatID + "?userid=" + this.myID
+          "#/services/" + data.roomchatID + "?userid=" + this.myID
         );
       }
     });
@@ -321,12 +326,15 @@ export class AppComponent implements OnInit {
   }
 
   acceptCall() {
-    return window.open(
-      "answer/" + this.callRoomchatID + "?userid=" + this.myID
+    window.open(
+      "#/answer/" + this.callRoomchatID + "?userid=" + this.myID
     );
+    this.showCallAccept = false;
   }
 
-  rejectCall() {}
+  rejectCall() {
+    this.showCallAccept = false;
+  }
 
   isCallOrAnswerRoute() {
     let url = this.router.routerState.snapshot.url.split("/");
