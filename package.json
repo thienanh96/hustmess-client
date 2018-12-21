@@ -3,12 +3,16 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng build --prod",
+    "start": "node server.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "postinstall": "ng build"
+  },
+  "engines": {
+    "node": "10.14.2",
+    "npm": "6.4.1"
   },
   "private": true,
   "dependencies": {
@@ -33,6 +37,7 @@
     "@types/peerjs": "0.0.30",
     "angular2-jwt": "^0.2.3",
     "core-js": "^2.5.4",
+    "express": "^4.16.4",
     "ng-autosize": "^1.1.0",
     "ng4-click-outside": "^1.0.1",
     "ngx-autosize": "^1.2.2",
