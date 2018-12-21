@@ -4,7 +4,7 @@ const app = express();
 app.use(express.static(__dirname + '/dist/web-app-chat-client'));
 app.listen(process.env.PORT || 8000);
 
-app.get('/*',function(req,res){
+app.get('*',function(req,res){
     res.sendFile(path.join(__dirname + '/dist/index.html'))
 })
 
