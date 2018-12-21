@@ -22,7 +22,7 @@ import { SearchRoomchatPipe } from "./search-roomchat.pipe";
 import { SearchContactsPipe } from "./search-contacts.pipe";
 import { MessageComponent } from "./components/message/message.component";
 import { TextareaAutosizeModule } from "ngx-textarea-autosize";
-
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { TimeAgoPipe } from "./time-ago.pipe";
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
@@ -152,7 +152,8 @@ const appRoutes: Routes = [
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,
       deps: [Http, RequestOptions]
-    }
+    },
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]
 })
