@@ -43,8 +43,8 @@
     <!-- <div style="border:none;background-color: transparent;border-radius: 0px;width:100%;float: left;height:20px">
       {{message.username}}
     </div> -->
-    <div class="other-message-content" *ngIf="message.content !== ''">
-      <div style="padding: 10px;font-size: 15px; color: black;word-wrap: break-word;line-height: 1.28">
+    <div class="other-message-content" *ngIf="message.content !== ''" style="width: 100%">
+      <div style="padding: 10px;font-size: 15px; color: black;word-wrap: break-word;line-height: 1.28;">
         {{message.content}}
       </div>
     </div>
@@ -52,14 +52,14 @@
     <div *ngIf="message.fileType === 'image'" style="width: 100%;height:100%;background-color: transparent;max-width: 50%;">
       <img src={{message.attach}} style="width:100%;height:100%;border-radius: 14px;margin-top:5px">
     </div>
-    <div class="other-message-content" *ngIf="message.fileType === 'application'" style="margin-left: 10px;margin-right:8px;width: 100%;height:100%">
+    <div class="other-message-content" *ngIf="message.fileType === 'application'" style="margin-top: 5px;margin-right:8px;width: 100%;height:100%">
       <a href={{message.attach}} style="color:black" target="_blank">
         <div style="width:15%;height:30px;float:left;display: flex;justify-content: center;align-items: center">
           <i class="fas fa-arrow-circle-down" style="font-size:20px"></i>
         </div>
         <div style="font-size:15px;width:85%;height:30px;float:left;display: flex;justify-content: center;align-items: center;overflow: hidden;text-overflow: ellipsis">
           <div>
-            report.rar
+            {{message.fileName}}
           </div>
         </div>
       </a>

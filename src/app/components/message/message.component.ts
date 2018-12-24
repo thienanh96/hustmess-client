@@ -25,7 +25,7 @@ export class MessageComponent implements OnInit,OnDestroy,AfterContentChecked,Af
               private messageService: MessageService) { }
 
   ngOnInit() {
-    console.log('boolean: ',this.message.displayLastInfo)
+    console.log('boolean: ',this.message)
   }
 
   ngOnDestroy(){

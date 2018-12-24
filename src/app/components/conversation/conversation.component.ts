@@ -336,6 +336,7 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewInit {
           this.confirmation.sending = false;
           this.confirmation.received = false;
           this.confirmation.seen = false;
+          console.log('check username: ',data)
           this.messages.push({
             userID: data.data.fromUserID,
             _id: data.data.messageID,

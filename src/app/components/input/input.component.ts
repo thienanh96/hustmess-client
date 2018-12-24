@@ -299,6 +299,7 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
                   type: 'message',
                   roomchatID: this.roomchatID,
                   messageID: data.newMessage._id,
+                  username: this.myInfo.username,
                   time: data.newMessage.time,
                   profileImage: data.userInfo.profileImage.lowQuality,
                   contentText: data.newMessage.content,
