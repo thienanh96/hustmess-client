@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
+import { Router, ActivatedRoute, RouterStateSnapshot } from "@angular/router";
 
 @Component({
   selector: 'app-profile',
@@ -15,7 +16,7 @@ export class ProfileComponent implements OnInit {
   grade : String;
   mssv: String;
   showModifyUserProfile: boolean = false;
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit() {
     this.loadProfile();
@@ -56,6 +57,10 @@ export class ProfileComponent implements OnInit {
       }
       this.closeModifyUserProfileModal();
     })
+  }
+
+  signOut(){
+    return this.router.navigate(['authenticate'])
   }
 
 

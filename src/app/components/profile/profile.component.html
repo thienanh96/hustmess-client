@@ -14,11 +14,16 @@
   <div class="row">
     <div class="col col-md-4 col-lg-4">
       <img style="width: 100%" src="{{avtSrc}}">
-      <a style="text-decoration: none;cursor: pointer" (click)="openModifyUserProfileModal()">
+      <a style="text-decoration: none;cursor: pointer;width: 100%" (click)="openModifyUserProfileModal()">
         <i class="fas fa-user-edit"></i>
         Chỉnh sửa
       </a>
+      <a style="text-decoration: none;cursor: pointer;width: 100%" (click)="signOut()">
+        <i class="fas fa-sign-out-alt"></i>
+        Đăng xuất
+      </a>
     </div>
+    
     <div class="col col-md-8 col-lg-8">
       <table class="table table-hover table-responsive">
         <tbody>
