@@ -153,5 +153,9 @@
   #seen-modal{
     width: 100%
   }
+
+  #wait-call-modal{
+    width: 100%;
+  }
   
 }

@@ -336,7 +336,7 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewInit {
           this.confirmation.sending = false;
           this.confirmation.received = false;
           this.confirmation.seen = false;
-          console.log('check username: ',data)
+          console.log('check username: ', data)
           this.messages.push({
             userID: data.data.fromUserID,
             _id: data.data.messageID,
@@ -637,6 +637,18 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewInit {
       let conversationUsernameWidth = conversationSideWidth - 150;
       document.getElementById("conversation-header-username").style.width =
         conversationUsernameWidth + "px";
+      document.getElementById("input-component").style.width =
+        document.getElementById("conversation-side").clientWidth + "px";
+      let inputFile = document.getElementById("input-file").clientWidth;
+      let inputComponent = document.getElementById("input-component").clientWidth;
+      let off = inputComponent;
+      document.getElementById("input-text").style.width = off + "px";
+      //chinh height
+      let conversationHeight = window.innerHeight - 230;
+      console.log('check height:____',conversationHeight)
+      document
+        .getElementById("conversation-body")
+        .setAttribute("style", "height: " + conversationHeight + "px");
     } else {
       this.showConversationInfo = true;
       this.showNavPrevious = false;
@@ -650,24 +662,29 @@ export class ConversationComponent implements OnInit, OnDestroy, AfterViewInit {
         document.getElementById("conversation-header").clientWidth - 110;
       document.getElementById("conversation-header-username").style.width =
         conversationUsernameWidth + "px";
+      document.getElementById("input-component").style.width =
+        document.getElementById("conversation-side").clientWidth + "px";
+      let inputFile = document.getElementById("input-file").clientWidth;
+      let inputComponent = document.getElementById("input-component").clientWidth;
+      let off = inputComponent - inputFile - 20;
+      document.getElementById("input-text").style.width = off + "px";
+      let conversationHeight = window.innerHeight - 190;
+      document
+        .getElementById("conversation-body")
+        .setAttribute("style", "height: " + conversationHeight + "px");
     }
     //Chinh header username
-    let conversationHeight = window.innerHeight - 190;
-    document
-      .getElementById("conversation-body")
-      .setAttribute("style", "height: " + conversationHeight + "px");
+    // let conversationHeight = window.innerHeight - 190;
+    // document
+    //   .getElementById("conversation-body")
+    //   .setAttribute("style", "height: " + conversationHeight + "px");
 
-    //chinh input
-    console.log(
-      "^&NJ: ",
-      document.getElementById("conversation-side").clientWidth
-    );
-    document.getElementById("input-component").style.width =
-      document.getElementById("conversation-side").clientWidth + "px";
-    let inputFile = document.getElementById("input-file").clientWidth;
-    let inputComponent = document.getElementById("input-component").clientWidth;
-    let off = inputComponent - inputFile - 20;
-    document.getElementById("input-text").style.width = off + "px";
+    // document.getElementById("input-component").style.width =
+    //   document.getElementById("conversation-side").clientWidth + "px";
+    // let inputFile = document.getElementById("input-file").clientWidth;
+    // let inputComponent = document.getElementById("input-component").clientWidth;
+    // let off = inputComponent - inputFile - 20;
+    // document.getElementById("input-text").style.width = off + "px";
 
     //chinh info conversation
     let conversationSideHeight = document.getElementById("conversation-side")

@@ -351,8 +351,14 @@ export class InputComponent implements OnInit, AfterViewInit, AfterContentChecke
     textAreaElement.style.height = '29px';
     this.heightTextArea = document.getElementById('text-area-input').clientHeight;
     document.getElementById('text-area-input').style['overflowY'] = 'hidden';
-    let conversationHeight = window.innerHeight - 192;
-    document.getElementById('conversation-body').setAttribute('style', 'height: ' + conversationHeight + 'px');
+    let widthW = window.innerWidth;
+    if (widthW < 900) {
+      let conversationHeight = window.innerHeight - 232;
+      document.getElementById('conversation-body').setAttribute('style', 'height: ' + conversationHeight + 'px');
+    } else {
+      let conversationHeight = window.innerHeight - 192;
+      document.getElementById('conversation-body').setAttribute('style', 'height: ' + conversationHeight + 'px');
+    }
   }
 
   sendCompCommunicationData(data, contentText, dataFile) {

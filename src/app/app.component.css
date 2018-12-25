@@ -49,3 +49,9 @@
   justify-content: center;
   align-content: center;
 }
+
+@media screen and (max-width:900px) {
+  #call-accept-modal-content{
+    width: 100%
+  }
+}
