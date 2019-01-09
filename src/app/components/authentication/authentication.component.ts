@@ -56,13 +56,13 @@ export class AuthenticationComponent implements OnInit {
                 existEmail: data.existEmail,
                 existUsername: data.existUsername,
                 existPhoneNumber: data.existPhoneNumber
-              }
+              };
             } else {
               return {
                 existEmail: true,
                 existUsername: true,
                 existPhoneNumber: true
-              }
+              };
             }
           })
         );
@@ -87,14 +87,14 @@ export class AuthenticationComponent implements OnInit {
         [Validators.required],
         this.usernameValidator()
       ),
-      password: new FormControl(
-        "",
-        [Validators.required, Validators.pattern(PASSWORD_REGEX)],
-        this.usernameValidator()
-      ),
+      password: new FormControl("", [
+        Validators.required,
+        Validators.pattern(PASSWORD_REGEX)
+      ]),
       phoneNumber: new FormControl(
         "",
-        [Validators.required, Validators.pattern(PHONENUMBER_REGEX)]
+        [Validators.required, Validators.pattern(PHONENUMBER_REGEX)],
+        this.usernameValidator()
       )
     });
   }
