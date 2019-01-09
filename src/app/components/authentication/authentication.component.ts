@@ -94,8 +94,7 @@ export class AuthenticationComponent implements OnInit {
       ),
       phoneNumber: new FormControl(
         "",
-        [Validators.required, Validators.pattern(PHONENUMBER_REGEX)],
-        this.usernameValidator()
+        [Validators.required, Validators.pattern(PHONENUMBER_REGEX)]
       )
     });
   }
