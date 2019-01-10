@@ -164,6 +164,7 @@ export class AppComponent implements OnInit {
     });
 
     this.socketService.receiveCallRequest().subscribe(data => {
+      console.log('data goi dien____________________', data)
       if (!data) return;
       this.callUsername = data.username;
       this.showCallAccept = true;
