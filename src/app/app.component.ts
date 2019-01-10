@@ -81,6 +81,7 @@ export class AppComponent implements OnInit {
           this.userService.getMe('low').subscribe(data => {
             if(data && data.success){
               this.myProfile = data.user
+              console.log('uersss: ',this.myProfile)
             }
           })
           this.socketService.joinRoomchat("world");
