@@ -78,6 +78,11 @@ export class AppComponent implements OnInit {
               });
             }
           });
+          this.userService.getMe('low').subscribe(data => {
+            if(data && data.success){
+              this.myProfile = data.user
+            }
+          })
           this.socketService.joinRoomchat("world");
         }
       }

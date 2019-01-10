@@ -248,7 +248,6 @@ export class SocketService {
   }
 
   emitCall(username,userID,roomchatID){
-    console.log('check emmit call: ',username)
     this.socket.emit('call-request',{
       username: username,
       userID: userID,
